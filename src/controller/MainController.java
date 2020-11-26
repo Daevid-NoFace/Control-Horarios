@@ -44,7 +44,6 @@ public class MainController implements Initializable {
                 @Override
                 protected Void call() throws Exception {
                     Controller.mergeExcelFiles(new File("Test.xlsx"), list);
-
                     return null;
                 }
             };
