@@ -1,6 +1,5 @@
 package controller;
 
-import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
@@ -10,12 +9,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import model.Controller;
-import model.Controller2;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -76,19 +72,5 @@ public class MainController implements Initializable {
             e.printStackTrace();
         }
 
-    }
-
-    //esto fue para hacer pruebas. El metodo que sirve es el de arriba
-    public void merge2(ActionEvent actionEvent) throws IOException {
-        ArrayList<FileInputStream> list = new ArrayList<>();
-
-        FileInputStream inputStream1 = new FileInputStream("C:/Users/DaVid/Downloads/Telegram Desktop/Archivos/2021.xlsx");
-
-        FileInputStream inputStream2 = new FileInputStream("C:/Users/DaVid/Downloads/Telegram Desktop/Archivos/Horary Model.xlsx");
-
-        list.add(inputStream1);
-        list.add(inputStream2);
-
-        Controller2.mergeExcelFiles(list);
     }
 }

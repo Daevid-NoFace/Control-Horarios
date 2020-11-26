@@ -5,6 +5,7 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.*;
 
@@ -46,6 +47,12 @@ public class Controller {
         int newRownumber = newSheet.getLastRowNum() + 1;
         int maxColumnNum = 0;
         Map<Integer, XSSFCellStyle> styleMap = (copyStyle) ? new HashMap<Integer, XSSFCellStyle>() : null;
+
+        for (int i = 0; i < sheet.getNumMergedRegions(); i++) {
+            CellRangeAddress region = sheet.getMergedRegion(i);
+
+            newSheet.addMergedRegion(region);
+        }
 
         for (int i = sheet.getFirstRowNum(); i <= sheet.getLastRowNum(); i++) {
             XSSFRow srcRow = sheet.getRow(i);
