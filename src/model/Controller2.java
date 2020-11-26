@@ -5,6 +5,7 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.*;
 
@@ -71,6 +72,12 @@ public class Controller2 {
 
         Map<Integer, XSSFCellStyle> styleMap = (copyStyle) ? new HashMap<>() : null;
 
+        for (int i = 0; i < sheet.getNumMergedRegions(); i++) {
+            CellRangeAddress region = sheet.getMergedRegion(i);
+
+            newSheet.addMergedRegion(region);
+        }
+
         for (int i = sheet.getFirstRowNum(); i <= sheet.getLastRowNum(); i++) {
             XSSFRow srcRow = sheet.getRow(i);   //tomo la fila correspondiente para copiarla
             XSSFRow destRow = newSheet.createRow(i + newRowNumber);
@@ -92,20 +99,17 @@ public class Controller2 {
     public static void copyRow(XSSFWorkbook newWorkbook, XSSFSheet srcSheet, XSSFSheet destSheet, XSSFRow srcRow, XSSFRow destRow, Map<Integer, XSSFCellStyle> styleMap) {
         destRow.setHeight(srcRow.getHeight());
 
+
         for (int i = srcRow.getFirstCellNum(); i <= srcRow.getLastCellNum(); i++) {
             if (i > 0) {
                 XSSFCell oldCell = srcRow.getCell(i);
                 XSSFCell newCell = destRow.getCell(i);
-
                 if (oldCell != null) {
                     if (newCell == null) {
                         newCell = destRow.createCell(i);
                     }
                     copyCell(newWorkbook, oldCell, newCell, styleMap);
                 }
-                //poner el fondo blanco
-
-
             }
         }
     }
@@ -124,6 +128,7 @@ public class Controller2 {
             }
             newCell.setCellStyle(newCellStyle);
         }
+
         switch(oldCell.getCellTypeEnum()) {
             case STRING:
                 newCell.setCellValue(oldCell.getRichStringCellValue());
