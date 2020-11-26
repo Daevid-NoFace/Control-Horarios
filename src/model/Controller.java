@@ -25,7 +25,7 @@ public class Controller {
         for (FileInputStream fin : list) {
             XSSFWorkbook b = new XSSFWorkbook(fin);
             for (int i = 0; i < b.getNumberOfSheets(); i++) {
-                sheet = book.createSheet();
+                sheet = book.createSheet(b.getSheetName(i));
                 copySheets(book, sheet, b.getSheetAt(i));
             }
         }
