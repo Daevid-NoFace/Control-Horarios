@@ -38,7 +38,7 @@ public class Controller2 {
 
                 System.out.println("Hoja #" + ++count2);
 
-                sheet = book.createSheet();
+                sheet = book.createSheet(auxWorkbook.getSheetAt(j).getSheetName());
                 copySheets(book, sheet, auxWorkbook.getSheetAt(j));
             }
         }
@@ -103,6 +103,9 @@ public class Controller2 {
                     }
                     copyCell(newWorkbook, oldCell, newCell, styleMap);
                 }
+                //poner el fondo blanco
+
+
             }
         }
     }
