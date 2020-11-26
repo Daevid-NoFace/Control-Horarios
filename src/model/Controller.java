@@ -4,15 +4,13 @@ import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.*;
-import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellReference;
+import org.apache.poi.util.IOUtils;
 import org.apache.poi.xssf.usermodel.*;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,10 +26,19 @@ public class Controller {
             for (int i = 0; i < b.getNumberOfSheets(); i++) {
                 sheet = book.createSheet(b.getSheetName(i));
                 copySheets(book, sheet, b.getSheetAt(i));
+
             }
+
         }
 
         try {
+            InputStream my_banner_image = new FileInputStream("src/resources/palobiofarma.png");
+            /* Convert Image to byte array */
+            byte[] bytes = IOUtils.toByteArray(my_banner_image);
+            /* Add Picture to workbook and get a index for the picture */
+            int my_picture_id = book.addPicture(bytes, Workbook.PICTURE_TYPE_JPEG);
+            /* Close Input Stream */
+            my_banner_image.close();
             writeFile(book, file);
         } catch (Exception e) {
             // TODO Auto-generated catch block
