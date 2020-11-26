@@ -38,8 +38,8 @@ public class MainController implements Initializable {
 
         try {
             ArrayList<FileInputStream> list = new ArrayList<>();
-            FileInputStream inputStream1 = new FileInputStream("C:/Users/DaVid/Downloads/Telegram Desktop/Archivos/2021.xlsx");
-            FileInputStream inputStream2 = new FileInputStream("C:/Users/DaVid/Downloads/Telegram Desktop/Archivos/Horary Model.xlsx");
+            FileInputStream inputStream1 = new FileInputStream("2021.xlsx");
+            FileInputStream inputStream2 = new FileInputStream("Horary Model.xlsx");
 
             list.add(inputStream1);
             list.add(inputStream2);
@@ -47,7 +47,7 @@ public class MainController implements Initializable {
             Task<Void> longTask = new Task<Void>() {
                 @Override
                 protected Void call() throws Exception {
-                    Controller.mergeExcelFiles(new File("C:/Users/DaVid/Downloads/Telegram Desktop/Archivos/Test.xlsx"), list);
+                    Controller.mergeExcelFiles(new File("Test.xlsx"), list);
 
                     return null;
                 }
