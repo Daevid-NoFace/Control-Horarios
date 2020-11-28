@@ -89,10 +89,12 @@ public class Controller {
                         }
 
                         //passWeekendsToSheets
-                        passWeekendToSheets(book, total_sheets);
+                        //passWeekendToSheets(book, total_sheets);
                     }
                 }
             }
+
+            passWeekendToSheets(book);
 
        /* Cell cell = book.getSheet("1").getRow(48).getCell(6);
         if(cell != null){
@@ -814,19 +816,48 @@ public class Controller {
     }
 
     private static void passWeekendToSheets(XSSFWorkbook workbook) {
+
         XSSFSheet calendarSheet = workbook.getSheetAt(0);
-        int startRow = 0;
-        int startColumn = 0;
 
-        for (int i = 0; i < 3; i++) {   //recorrer filas
-            for (int j = 0; j < 4; j++) {   //recorrer columnas
+        Iterator<Row> rowIterator = calendarSheet.iterator();
 
+        while(rowIterator.hasNext()) {
+            XSSFRow row = (XSSFRow) rowIterator.next();
+
+            Iterator<Cell> cellIterator = row.iterator();
+
+            while (cellIterator.hasNext()) {
+                XSSFCell cell = (XSSFCell) cellIterator.next();
+
+                if (cell.getCellType() != CellType.STRING && cell != null) {
+                    if (DateUtil.isCellDateFormatted(cell)) {
+                        Date date = cell.getDateCellValue();
+
+                        if (date != null) {
+                            if (date.getDay() == 0 || date.getDay() == 6 || cell.getCellStyle().getFillForegroundColorColor().getARGBHex() != "#FFFFFF") {
+                                int mouth = date.getMonth();
+                                int day = date.getDate();
+
+                                pass(workbook.getSheetAt(mouth + 1), day, cell.getCellStyle());
+                            }
+                        }
+                    }
+                }
             }
         }
+    }
 
-        //recorrer los meses
-        for (int i = 1; i < 13; i++) {
+    private static void pass(XSSFSheet sheet, int day, CellStyle cellStyle) {
 
+        boolean match = false;
+        int rowStart = 15;
+
+        while (!match) {
+            if (sheet.getRow(rowStart).getCell(1).getNumericCellValue() == day) {
+                fixAdyacentsCell(sheet.getRow(rowStart).getCell(1), sheet.getRow(rowStart), cellStyle);
+                match = true;
+            } else
+                rowStart++;
         }
     }
 
