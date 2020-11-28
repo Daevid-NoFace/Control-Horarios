@@ -22,7 +22,7 @@ public class Controller {
         XSSFSheet sheet = null;
 
         //FileInputStream obtains input bytes from the image file
-        InputStream inputStream = new FileInputStream("src/resources/palobiofarma.png");
+        InputStream inputStream = new FileInputStream("src/resources/medibiofarma.png");
         //Get the contents of an InputStream as a byte[].
         byte[] bytes = IOUtils.toByteArray(inputStream);
         //Adds a picture to the workbook
@@ -215,7 +215,66 @@ public class Controller {
         return cells;
     }
 
-    private static void passWeekendToSheets(XSSFWorkbook workbook, int indexSheet) {
+
+    private static void passWeekendToSheets(XSSFWorkbook workbook) {
+
+        XSSFSheet calendarSheet = workbook.getSheetAt(0);
+
+        Iterator<Row> rowIterator = calendarSheet.iterator();
+
+        while(rowIterator.hasNext()) {
+            XSSFRow row = (XSSFRow) rowIterator.next();
+
+            Iterator<Cell> cellIterator = row.iterator();
+
+            while (cellIterator.hasNext()) {
+                XSSFCell cell = (XSSFCell) cellIterator.next();
+
+                if (cell.getCellType() != CellType.STRING && cell != null) {
+                    if (DateUtil.isCellDateFormatted(cell)) {
+                        Date date = cell.getDateCellValue();
+
+                        if (date != null) {
+                            if (date.getDay() == 0 || date.getDay() == 6 || !cell.getCellStyle().getFillForegroundColorColor().getARGBHex().equalsIgnoreCase("FFFFFFFF")) {
+                                //System.out.println("Color: " + cell.getCellStyle().getFillForegroundColorColor().getARGBHex());
+                                int mouth = date.getMonth();
+                                int day = date.getDate();
+
+                                pass(workbook.getSheetAt(mouth + 1), day, cell.getCellStyle());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private static void pass(XSSFSheet sheet, int day, CellStyle cellStyle) {
+
+        boolean match = false;
+        int rowStart = 15;
+
+        while (!match) {
+            if (sheet.getRow(rowStart).getCell(1).getNumericCellValue() == day) {
+                fixAdyacentsCell(sheet.getRow(rowStart).getCell(1), sheet.getRow(rowStart), cellStyle);
+                match = true;
+            } else
+                rowStart++;
+        }
+    }
+
+    private static void fixAdyacentsCell(XSSFCell cell, XSSFRow row, CellStyle style){
+        cell.setCellStyle(style);
+        cell.setCellType(CellType.NUMERIC);
+        row.getCell(2).setCellStyle(style);
+        row.getCell(4).setCellStyle(style);
+        row.getCell(6).setCellStyle(style);
+        row.getCell(6).setCellFormula(null);
+        row.getCell(6).setCellValue(" ");
+
+    }
+
+       /* private static void passWeekendToSheets(XSSFWorkbook workbook, int indexSheet) {
 
         //indexSheet begins on 2
         //System.out.println("Pass weekend, total of sheets -> " + workbook.getNumberOfSheets());
@@ -284,7 +343,7 @@ public class Controller {
                 int dayWeekend = (i == 0) ? 9 : 15;
 
                 while (!end) {
-                    
+
 
                     XSSFRow srcRow = calendarSheet.getRow(rowStart);
                     XSSFCell cell = srcRow.getCell(dayWeekend);
@@ -813,62 +872,6 @@ public class Controller {
                 }
             }
         }
-    }
+    }*/
 
-    private static void passWeekendToSheets(XSSFWorkbook workbook) {
-
-        XSSFSheet calendarSheet = workbook.getSheetAt(0);
-
-        Iterator<Row> rowIterator = calendarSheet.iterator();
-
-        while(rowIterator.hasNext()) {
-            XSSFRow row = (XSSFRow) rowIterator.next();
-
-            Iterator<Cell> cellIterator = row.iterator();
-
-            while (cellIterator.hasNext()) {
-                XSSFCell cell = (XSSFCell) cellIterator.next();
-
-                if (cell.getCellType() != CellType.STRING && cell != null) {
-                    if (DateUtil.isCellDateFormatted(cell)) {
-                        Date date = cell.getDateCellValue();
-
-                        if (date != null) {
-                            if (date.getDay() == 0 || date.getDay() == 6 || cell.getCellStyle().getFillForegroundColorColor().getARGBHex() != "#FFFFFF") {
-                                int mouth = date.getMonth();
-                                int day = date.getDate();
-
-                                pass(workbook.getSheetAt(mouth + 1), day, cell.getCellStyle());
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private static void pass(XSSFSheet sheet, int day, CellStyle cellStyle) {
-
-        boolean match = false;
-        int rowStart = 15;
-
-        while (!match) {
-            if (sheet.getRow(rowStart).getCell(1).getNumericCellValue() == day) {
-                fixAdyacentsCell(sheet.getRow(rowStart).getCell(1), sheet.getRow(rowStart), cellStyle);
-                match = true;
-            } else
-                rowStart++;
-        }
-    }
-
-    private static void fixAdyacentsCell(XSSFCell cell, XSSFRow row, CellStyle style){
-        cell.setCellStyle(style);
-        cell.setCellType(CellType.NUMERIC);
-        row.getCell(2).setCellStyle(style);
-        row.getCell(4).setCellStyle(style);
-        row.getCell(6).setCellStyle(style);
-        row.getCell(6).setCellFormula(null);
-        row.getCell(6).setCellValue(" ");
-
-    }
 }
