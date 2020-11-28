@@ -1,5 +1,6 @@
 package main;
 
+import eu.mihosoft.scaledfx.ScalableContentPane;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,9 +11,11 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+        ScalableContentPane scale = new ScalableContentPane();
         Parent root = FXMLLoader.load(getClass().getResource("../view/sample.fxml"));
+        scale.setContent(root);
         primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root));
+        primaryStage.setScene(new Scene(scale));
         primaryStage.show();
     }
 

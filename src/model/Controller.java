@@ -22,7 +22,7 @@ public class Controller {
         XSSFSheet sheet = null;
 
         //FileInputStream obtains input bytes from the image file
-        InputStream inputStream = new FileInputStream("src/resources/palobiofarma.png");
+        InputStream inputStream = new FileInputStream("src/resources/medibiofarma.png");
         //Get the contents of an InputStream as a byte[].
         byte[] bytes = IOUtils.toByteArray(inputStream);
         //Adds a picture to the workbook
@@ -43,7 +43,6 @@ public class Controller {
                     copySheets(book, sheet, b.getSheetAt(i));
                     total_sheets++;
                     if (book.getNumberOfSheets() == 1) {
-
                         calendar_year = book.getSheetAt(0).getRow(0).getCell(1).getStringCellValue();
                         calendar_year = calendar_year.split(" ")[0];
                         location = book.getSheetAt(0).getRow(0).getCell(6).getStringCellValue();
@@ -223,7 +222,7 @@ public class Controller {
 
         Iterator<Row> rowIterator = calendarSheet.iterator();
 
-        while (rowIterator.hasNext()) {
+        while(rowIterator.hasNext()) {
             XSSFRow row = (XSSFRow) rowIterator.next();
 
             Iterator<Cell> cellIterator = row.iterator();
@@ -236,7 +235,8 @@ public class Controller {
                         Date date = cell.getDateCellValue();
 
                         if (date != null) {
-                            if (date.getDay() == 0 || date.getDay() == 6 || !cell.getCellStyle().getFillForegroundColorColor().getARGBHex().equalsIgnoreCase("#FFFFFF")) {
+                            if (date.getDay() == 0 || date.getDay() == 6 || !cell.getCellStyle().getFillForegroundColorColor().getARGBHex().equalsIgnoreCase("FFFFFFFF")) {
+                                //System.out.println("Color: " + cell.getCellStyle().getFillForegroundColorColor().getARGBHex());
                                 int mouth = date.getMonth();
                                 int day = date.getDate();
 
@@ -263,7 +263,7 @@ public class Controller {
         }
     }
 
-    private static void fixAdyacentsCell(XSSFCell cell, XSSFRow row, CellStyle style) {
+    private static void fixAdyacentsCell(XSSFCell cell, XSSFRow row, CellStyle style){
         cell.setCellStyle(style);
         cell.setCellType(CellType.NUMERIC);
         row.getCell(2).setCellStyle(style);
@@ -274,7 +274,7 @@ public class Controller {
 
     }
 
-     /* private static void passWeekendToSheets(XSSFWorkbook workbook, int indexSheet) {
+       /* private static void passWeekendToSheets(XSSFWorkbook workbook, int indexSheet) {
 
         //indexSheet begins on 2
         //System.out.println("Pass weekend, total of sheets -> " + workbook.getNumberOfSheets());
