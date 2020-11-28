@@ -220,6 +220,7 @@ public class Controller {
         //System.out.println("Pass weekend, name of sheet -> " + workbook.getSheetName(indexSheet - 2));
 
         ArrayList<Integer> dateOfTheWeekends = null;
+        CellStyle style = null;
 
         if ((indexSheet - 1) == 1) {    //January
             for (int i = 0; i < 2; i++) {   //only sunday and saturday
@@ -237,8 +238,8 @@ public class Controller {
 
                     if (DateUtil.isCellDateFormatted(cell)) {
                         Date date = cell.getDateCellValue();
+                        style = cell.getCellStyle();
                         System.out.println("Date -> " + date.getDate());
-
                         dateOfTheWeekends.add(date.getDate());
                     } else if (cell.getCellType() == CellType.NUMERIC || cell.getCellType() == CellType.FORMULA)
                         end = true;
@@ -261,7 +262,9 @@ public class Controller {
 
                         if (cell.getCellType() == CellType.NUMERIC)
                             if (!dateOfTheWeekends.isEmpty() && cell.getNumericCellValue() == dateOfTheWeekends.get(0)) {
-                                cell.setCellValue(999999);
+
+                                fixAdyacentsCell(cell,row,style);
+                                //cell.setCellValue(999999);
                                 dateOfTheWeekends.remove(0);
                             }
                     }
@@ -279,12 +282,14 @@ public class Controller {
                 int dayWeekend = (i == 0) ? 9 : 15;
 
                 while (!end) {
+                    
 
                     XSSFRow srcRow = calendarSheet.getRow(rowStart);
                     XSSFCell cell = srcRow.getCell(dayWeekend);
 
                     if (DateUtil.isCellDateFormatted(cell)) {
                         Date date = cell.getDateCellValue();
+                        style = cell.getCellStyle();
                         System.out.println("Date -> " + date.getDate());
 
                         dateOfTheWeekends.add(date.getDate());
@@ -309,7 +314,7 @@ public class Controller {
 
                         if (cell.getCellType() == CellType.NUMERIC)
                             if (!dateOfTheWeekends.isEmpty() && cell.getNumericCellValue() == dateOfTheWeekends.get(0)) {
-                                cell.setCellValue(999999);
+                                fixAdyacentsCell(cell,row,style);
                                 dateOfTheWeekends.remove(0);
                             }
                     }
@@ -333,6 +338,7 @@ public class Controller {
 
                     if (DateUtil.isCellDateFormatted(cell)) {
                         Date date = cell.getDateCellValue();
+                        style = cell.getCellStyle();
                         System.out.println("Date -> " + date.getDate());
 
                         dateOfTheWeekends.add(date.getDate());
@@ -357,7 +363,7 @@ public class Controller {
 
                         if (cell.getCellType() == CellType.NUMERIC)
                             if (!dateOfTheWeekends.isEmpty() && cell.getNumericCellValue() == dateOfTheWeekends.get(0)) {
-                                cell.setCellValue(999999);
+                                fixAdyacentsCell(cell,row,style);
                                 dateOfTheWeekends.remove(0);
                             }
                     }
@@ -381,6 +387,7 @@ public class Controller {
 
                     if (DateUtil.isCellDateFormatted(cell)) {
                         Date date = cell.getDateCellValue();
+                        style = cell.getCellStyle();
                         System.out.println("Date -> " + date.getDate());
 
                         dateOfTheWeekends.add(date.getDate());
@@ -405,7 +412,7 @@ public class Controller {
 
                         if (cell.getCellType() == CellType.NUMERIC)
                             if (!dateOfTheWeekends.isEmpty() && cell.getNumericCellValue() == dateOfTheWeekends.get(0)) {
-                                cell.setCellValue(999999);
+                                fixAdyacentsCell(cell,row,style);
                                 dateOfTheWeekends.remove(0);
                             }
                     }
@@ -429,6 +436,7 @@ public class Controller {
 
                     if (DateUtil.isCellDateFormatted(cell)) {
                         Date date = cell.getDateCellValue();
+                        style = cell.getCellStyle();
                         System.out.println("Date -> " + date.getDate());
 
                         dateOfTheWeekends.add(date.getDate());
@@ -453,7 +461,7 @@ public class Controller {
 
                         if (cell.getCellType() == CellType.NUMERIC)
                             if (!dateOfTheWeekends.isEmpty() && cell.getNumericCellValue() == dateOfTheWeekends.get(0)) {
-                                cell.setCellValue(999999);
+                                fixAdyacentsCell(cell,row,style);
                                 dateOfTheWeekends.remove(0);
                             }
                     }
@@ -477,6 +485,7 @@ public class Controller {
 
                     if (DateUtil.isCellDateFormatted(cell)) {
                         Date date = cell.getDateCellValue();
+                        style = cell.getCellStyle();
                         System.out.println("Date -> " + date.getDate());
 
                         dateOfTheWeekends.add(date.getDate());
@@ -501,7 +510,7 @@ public class Controller {
 
                         if (cell.getCellType() == CellType.NUMERIC)
                             if (!dateOfTheWeekends.isEmpty() && cell.getNumericCellValue() == dateOfTheWeekends.get(0)) {
-                                cell.setCellValue(999999);
+                                fixAdyacentsCell(cell,row,style);
                                 dateOfTheWeekends.remove(0);
                             }
                     }
@@ -525,6 +534,7 @@ public class Controller {
 
                     if (DateUtil.isCellDateFormatted(cell)) {
                         Date date = cell.getDateCellValue();
+                        style = cell.getCellStyle();
                         System.out.println("Date -> " + date.getDate());
 
                         dateOfTheWeekends.add(date.getDate());
@@ -549,7 +559,7 @@ public class Controller {
 
                         if (cell.getCellType() == CellType.NUMERIC)
                             if (!dateOfTheWeekends.isEmpty() && cell.getNumericCellValue() == dateOfTheWeekends.get(0)) {
-                                cell.setCellValue(999999);
+                                fixAdyacentsCell(cell,row,style);
                                 dateOfTheWeekends.remove(0);
                             }
                     }
@@ -573,6 +583,7 @@ public class Controller {
 
                     if (DateUtil.isCellDateFormatted(cell)) {
                         Date date = cell.getDateCellValue();
+                        style = cell.getCellStyle();
                         System.out.println("Date -> " + date.getDate());
 
                         dateOfTheWeekends.add(date.getDate());
@@ -597,7 +608,7 @@ public class Controller {
 
                         if (cell.getCellType() == CellType.NUMERIC)
                             if (!dateOfTheWeekends.isEmpty() && cell.getNumericCellValue() == dateOfTheWeekends.get(0)) {
-                                cell.setCellValue(999999);
+                                fixAdyacentsCell(cell,row,style);
                                 dateOfTheWeekends.remove(0);
                             }
                     }
@@ -621,6 +632,7 @@ public class Controller {
 
                     if (DateUtil.isCellDateFormatted(cell)) {
                         Date date = cell.getDateCellValue();
+                        style = cell.getCellStyle();
                         System.out.println("Date -> " + date.getDate());
 
                         dateOfTheWeekends.add(date.getDate());
@@ -645,7 +657,7 @@ public class Controller {
 
                         if (cell.getCellType() == CellType.NUMERIC)
                             if (!dateOfTheWeekends.isEmpty() && cell.getNumericCellValue() == dateOfTheWeekends.get(0)) {
-                                cell.setCellValue(999999);
+                                fixAdyacentsCell(cell,row,style);
                                 dateOfTheWeekends.remove(0);
                             }
                     }
@@ -669,6 +681,7 @@ public class Controller {
 
                     if (DateUtil.isCellDateFormatted(cell)) {
                         Date date = cell.getDateCellValue();
+                        style = cell.getCellStyle();
                         System.out.println("Date -> " + date.getDate());
 
                         dateOfTheWeekends.add(date.getDate());
@@ -693,7 +706,7 @@ public class Controller {
 
                         if (cell.getCellType() == CellType.NUMERIC)
                             if (!dateOfTheWeekends.isEmpty() && cell.getNumericCellValue() == dateOfTheWeekends.get(0)) {
-                                cell.setCellValue(999999);
+                                fixAdyacentsCell(cell,row,style);
                                 dateOfTheWeekends.remove(0);
                             }
                     }
@@ -717,6 +730,7 @@ public class Controller {
 
                     if (DateUtil.isCellDateFormatted(cell)) {
                         Date date = cell.getDateCellValue();
+                        style = cell.getCellStyle();
                         System.out.println("Date -> " + date.getDate());
 
                         dateOfTheWeekends.add(date.getDate());
@@ -741,7 +755,7 @@ public class Controller {
 
                         if (cell.getCellType() == CellType.NUMERIC)
                             if (!dateOfTheWeekends.isEmpty() && cell.getNumericCellValue() == dateOfTheWeekends.get(0)) {
-                                cell.setCellValue(999999);
+                                fixAdyacentsCell(cell,row,style);
                                 dateOfTheWeekends.remove(0);
                             }
                     }
@@ -765,6 +779,7 @@ public class Controller {
 
                     if (DateUtil.isCellDateFormatted(cell)) {
                         Date date = cell.getDateCellValue();
+                        style = cell.getCellStyle();
                         System.out.println("Date -> " + date.getDate());
 
                         dateOfTheWeekends.add(date.getDate());
@@ -789,7 +804,7 @@ public class Controller {
 
                         if (cell.getCellType() == CellType.NUMERIC)
                             if (!dateOfTheWeekends.isEmpty() && cell.getNumericCellValue() == dateOfTheWeekends.get(0)) {
-                                cell.setCellValue(999999);
+                                fixAdyacentsCell(cell,row,style);
                                 dateOfTheWeekends.remove(0);
                             }
                     }
@@ -813,5 +828,16 @@ public class Controller {
         for (int i = 1; i < 13; i++) {
 
         }
+    }
+
+    private static void fixAdyacentsCell(XSSFCell cell, XSSFRow row, CellStyle style){
+        cell.setCellStyle(style);
+        cell.setCellType(CellType.NUMERIC);
+        row.getCell(2).setCellStyle(style);
+        row.getCell(4).setCellStyle(style);
+        row.getCell(6).setCellStyle(style);
+        row.getCell(6).setCellFormula(null);
+        row.getCell(6).setCellValue(" ");
+
     }
 }
