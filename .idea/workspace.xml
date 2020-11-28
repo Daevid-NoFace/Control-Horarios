@@ -23,12 +23,16 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/2021.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/2021.xlsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Test.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/Test.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Control-Horarios/model/Controller.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Control-Horarios/model/Controller.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/model/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Controller.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
   </component>
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
@@ -87,6 +91,9 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="1" />
+  </component>
   <component name="ProjectId" id="1kkEI3gzaY9ZypjGKTgTd7jU1rh" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectReloadState">
@@ -106,7 +113,7 @@
     <property name="OverrideImplement.combined" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="dynamic.classpath" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/libs/jfoenix-8.0.8.jar" />
+    <property name="last_opened_file_path" value="$USER_HOME$/AppData/Local/SceneBuilder/SceneBuilder.exe" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -242,42 +249,47 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="524" y="115" key="#xdebugger.evaluate/0.0.1536.824@0.0.1536.824" timestamp="1606412788598" />
-    <state x="473" y="154" key="FileChooserDialogImpl" timestamp="1606349000489">
+    <state x="473" y="154" key="FileChooserDialogImpl" timestamp="1606466476083">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
+    <state x="473" y="154" key="FileChooserDialogImpl/0.0.1536.824/1920.0.1536.824@0.0.1536.824" timestamp="1606466476083" />
     <state x="473" y="154" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1606349000489" />
-    <state width="1493" height="210" key="GridCell.Tab.0.bottom" timestamp="1606424648217">
+    <state width="1493" height="210" key="GridCell.Tab.0.bottom" timestamp="1606477527330">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="210" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1606424648217" />
-    <state width="1493" height="210" key="GridCell.Tab.0.center" timestamp="1606424648217">
+    <state width="1493" height="210" key="GridCell.Tab.0.bottom/0.0.1536.824/1920.0.1536.824@0.0.1536.824" timestamp="1606477527330" />
+    <state width="1493" height="261" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1606426161624" />
+    <state width="1493" height="210" key="GridCell.Tab.0.center" timestamp="1606477527330">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="210" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1606424648217" />
-    <state width="1493" height="210" key="GridCell.Tab.0.left" timestamp="1606424648217">
+    <state width="1493" height="210" key="GridCell.Tab.0.center/0.0.1536.824/1920.0.1536.824@0.0.1536.824" timestamp="1606477527330" />
+    <state width="1493" height="261" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1606426161624" />
+    <state width="1493" height="210" key="GridCell.Tab.0.left" timestamp="1606477527330">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="210" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1606424648217" />
-    <state width="1493" height="210" key="GridCell.Tab.0.right" timestamp="1606424648217">
+    <state width="1493" height="210" key="GridCell.Tab.0.left/0.0.1536.824/1920.0.1536.824@0.0.1536.824" timestamp="1606477527330" />
+    <state width="1493" height="261" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1606426161624" />
+    <state width="1493" height="210" key="GridCell.Tab.0.right" timestamp="1606477527330">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="210" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1606424648217" />
-    <state width="1493" height="261" key="GridCell.Tab.1.bottom" timestamp="1606424505443">
+    <state width="1493" height="210" key="GridCell.Tab.0.right/0.0.1536.824/1920.0.1536.824@0.0.1536.824" timestamp="1606477527330" />
+    <state width="1493" height="261" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1606426161624" />
+    <state width="1493" height="261" key="GridCell.Tab.1.bottom" timestamp="1606426161625">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="261" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1606424505443" />
-    <state width="1493" height="261" key="GridCell.Tab.1.center" timestamp="1606424505443">
+    <state width="1493" height="261" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1606426161625" />
+    <state width="1493" height="261" key="GridCell.Tab.1.center" timestamp="1606426161624">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="261" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1606424505443" />
-    <state width="1493" height="261" key="GridCell.Tab.1.left" timestamp="1606424505443">
+    <state width="1493" height="261" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1606426161624" />
+    <state width="1493" height="261" key="GridCell.Tab.1.left" timestamp="1606426161624">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="261" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1606424505443" />
-    <state width="1493" height="261" key="GridCell.Tab.1.right" timestamp="1606424505443">
+    <state width="1493" height="261" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1606426161624" />
+    <state width="1493" height="261" key="GridCell.Tab.1.right" timestamp="1606426161624">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="261" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1606424505443" />
+    <state width="1493" height="261" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1606426161624" />
     <state x="249" y="0" key="SettingsEditor" timestamp="1606379588853">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -290,16 +302,5 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1606408867194" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/model/Controller.java</url>
-          <line>52</line>
-          <option name="timeStamp" value="8" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

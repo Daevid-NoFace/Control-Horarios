@@ -11,10 +11,7 @@ import org.apache.poi.util.IOUtils;
 import org.apache.poi.xssf.usermodel.*;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Controller {
 
@@ -51,6 +48,7 @@ public class Controller {
                         location = book.getSheetAt(0).getRow(0).getCell(6).getStringCellValue();
                     }
                     if (total_sheets > 1) {
+                        //LOGO Creation
                         //Returns an object that handles instantiating concrete classes
                         CreationHelper helper = book.getCreationHelper();
 
@@ -67,6 +65,8 @@ public class Controller {
                         Picture pict = drawing.createPicture(anchor, pictureIdx);
                         //Reset the image to the original size
                         pict.resize(3, 3);
+
+                        //Push date
                         Cell cell = sheet.getRow(53).getCell(6);
                         if (cell != null) {
                             cell.setCellValue(Integer.parseInt(calendar_year));
@@ -87,10 +87,11 @@ public class Controller {
                                     cell_formulas.get(total_sheets - 2));
                             System.out.println(cell.getCellFormula());
                         }
+
+                        //passWeekendsToSheets
+                        passWeekendToSheets(book, total_sheets);
                     }
-
                 }
-
             }
 
        /* Cell cell = book.getSheet("1").getRow(48).getCell(6);
@@ -210,5 +211,607 @@ public class Controller {
         cells.add("!X40");
 
         return cells;
+    }
+
+    private static void passWeekendToSheets(XSSFWorkbook workbook, int indexSheet) {
+
+        //indexSheet begins on 2
+        //System.out.println("Pass weekend, total of sheets -> " + workbook.getNumberOfSheets());
+        //System.out.println("Pass weekend, name of sheet -> " + workbook.getSheetName(indexSheet - 2));
+
+        ArrayList<Integer> dateOfTheWeekends = null;
+
+        if ((indexSheet - 1) == 1) {    //January
+            for (int i = 0; i < 2; i++) {   //only sunday and saturday
+
+                dateOfTheWeekends = new ArrayList<>();
+                boolean end = false;
+                XSSFSheet calendarSheet = workbook.getSheetAt(0);
+                int rowStart = 4;
+                int dayWeekend = (i == 0) ? 1 : 7;
+
+                while (!end) {
+
+                    XSSFRow srcRow = calendarSheet.getRow(rowStart);
+                    XSSFCell cell = srcRow.getCell(dayWeekend);
+
+                    if (DateUtil.isCellDateFormatted(cell)) {
+                        Date date = cell.getDateCellValue();
+                        System.out.println("Date -> " + date.getDate());
+
+                        dateOfTheWeekends.add(date.getDate());
+                    } else if (cell.getCellType() == CellType.NUMERIC || cell.getCellType() == CellType.FORMULA)
+                        end = true;
+
+                    rowStart++;
+                }
+
+                //coincidir las fechas en la hoja de horarios
+                XSSFSheet scheduleSheet = workbook.getSheetAt(indexSheet - 1);
+                System.out.println("Name of Sheet-> " + workbook.getSheetAt(indexSheet - 1).getSheetName());
+
+                //pararse en la columna de los dias, columna B(index 1) fila 16 (index 15)
+                //iterar por filas
+                for (int j = 15; j < 46; j++) {
+                    XSSFRow row = scheduleSheet.getRow(j);
+                    System.out.println("j-> " + j);
+                    if (row.getCell(1) != null) {
+                        System.out.println("Cell -> " + row.getCell(1).getNumericCellValue());
+                        XSSFCell cell = row.getCell(1);
+
+                        if (cell.getCellType() == CellType.NUMERIC)
+                            if (!dateOfTheWeekends.isEmpty() && cell.getNumericCellValue() == dateOfTheWeekends.get(0)) {
+                                cell.setCellValue(999999);
+                                dateOfTheWeekends.remove(0);
+                            }
+                    }
+                }
+            }
+        }
+
+        if ((indexSheet - 1) == 2) {    //Febrery
+            for (int i = 0; i < 2; i++) {   //only sunday and saturday
+
+                dateOfTheWeekends = new ArrayList<>();
+                boolean end = false;
+                XSSFSheet calendarSheet = workbook.getSheetAt(0);
+                int rowStart = 4;
+                int dayWeekend = (i == 0) ? 9 : 15;
+
+                while (!end) {
+
+                    XSSFRow srcRow = calendarSheet.getRow(rowStart);
+                    XSSFCell cell = srcRow.getCell(dayWeekend);
+
+                    if (DateUtil.isCellDateFormatted(cell)) {
+                        Date date = cell.getDateCellValue();
+                        System.out.println("Date -> " + date.getDate());
+
+                        dateOfTheWeekends.add(date.getDate());
+                    } else if (cell == null || cell.getCellType() == CellType.NUMERIC || cell.getCellType() == CellType.FORMULA)
+                        end = true;
+
+                    rowStart++;
+                }
+
+                //coincidir las fechas en la hoja de horarios
+                XSSFSheet scheduleSheet = workbook.getSheetAt(indexSheet - 1);
+                System.out.println("Name of Sheet-> " + workbook.getSheetAt(indexSheet - 1).getSheetName());
+
+                //pararse en la columna de los dias, columna B(index 1) fila 16 (index 15)
+                //iterar por filas
+                for (int j = 15; j < 46; j++) {
+                    XSSFRow row = scheduleSheet.getRow(j);
+                    System.out.println("j-> " + j);
+                    if (row.getCell(1) != null) {
+                        System.out.println("Cell -> " + row.getCell(1).getNumericCellValue());
+                        XSSFCell cell = row.getCell(1);
+
+                        if (cell.getCellType() == CellType.NUMERIC)
+                            if (!dateOfTheWeekends.isEmpty() && cell.getNumericCellValue() == dateOfTheWeekends.get(0)) {
+                                cell.setCellValue(999999);
+                                dateOfTheWeekends.remove(0);
+                            }
+                    }
+                }
+            }
+        }
+
+        if ((indexSheet - 1) == 3) {    //Febrery
+            for (int i = 0; i < 2; i++) {   //only sunday and saturday
+
+                dateOfTheWeekends = new ArrayList<>();
+                boolean end = false;
+                XSSFSheet calendarSheet = workbook.getSheetAt(0);
+                int rowStart = 4;
+                int dayWeekend = (i == 0) ? 17 : 23;
+
+                while (!end) {
+
+                    XSSFRow srcRow = calendarSheet.getRow(rowStart);
+                    XSSFCell cell = srcRow.getCell(dayWeekend);
+
+                    if (DateUtil.isCellDateFormatted(cell)) {
+                        Date date = cell.getDateCellValue();
+                        System.out.println("Date -> " + date.getDate());
+
+                        dateOfTheWeekends.add(date.getDate());
+                    } else if (cell == null || cell.getCellType() == CellType.NUMERIC || cell.getCellType() == CellType.FORMULA)
+                        end = true;
+
+                    rowStart++;
+                }
+
+                //coincidir las fechas en la hoja de horarios
+                XSSFSheet scheduleSheet = workbook.getSheetAt(indexSheet - 1);
+                System.out.println("Name of Sheet-> " + workbook.getSheetAt(indexSheet - 1).getSheetName());
+
+                //pararse en la columna de los dias, columna B(index 1) fila 16 (index 15)
+                //iterar por filas
+                for (int j = 15; j < 46; j++) {
+                    XSSFRow row = scheduleSheet.getRow(j);
+                    System.out.println("j-> " + j);
+                    if (row.getCell(1) != null) {
+                        System.out.println("Cell -> " + row.getCell(1).getNumericCellValue());
+                        XSSFCell cell = row.getCell(1);
+
+                        if (cell.getCellType() == CellType.NUMERIC)
+                            if (!dateOfTheWeekends.isEmpty() && cell.getNumericCellValue() == dateOfTheWeekends.get(0)) {
+                                cell.setCellValue(999999);
+                                dateOfTheWeekends.remove(0);
+                            }
+                    }
+                }
+            }
+        }
+
+        if ((indexSheet - 1) == 4) {    //Febrery
+            for (int i = 0; i < 2; i++) {   //only sunday and saturday
+
+                dateOfTheWeekends = new ArrayList<>();
+                boolean end = false;
+                XSSFSheet calendarSheet = workbook.getSheetAt(0);
+                int rowStart = 14;
+                int dayWeekend = (i == 0) ? 1 : 7;
+
+                while (!end) {
+
+                    XSSFRow srcRow = calendarSheet.getRow(rowStart);
+                    XSSFCell cell = srcRow.getCell(dayWeekend);
+
+                    if (DateUtil.isCellDateFormatted(cell)) {
+                        Date date = cell.getDateCellValue();
+                        System.out.println("Date -> " + date.getDate());
+
+                        dateOfTheWeekends.add(date.getDate());
+                    } else if (cell == null || cell.getCellType() == CellType.NUMERIC || cell.getCellType() == CellType.FORMULA)
+                        end = true;
+
+                    rowStart++;
+                }
+
+                //coincidir las fechas en la hoja de horarios
+                XSSFSheet scheduleSheet = workbook.getSheetAt(indexSheet - 1);
+                System.out.println("Name of Sheet-> " + workbook.getSheetAt(indexSheet - 1).getSheetName());
+
+                //pararse en la columna de los dias, columna B(index 1) fila 16 (index 15)
+                //iterar por filas
+                for (int j = 15; j < 45; j++) {
+                    XSSFRow row = scheduleSheet.getRow(j);
+                    System.out.println("j-> " + j);
+                    if (row.getCell(1) != null) {
+                        System.out.println("Cell -> " + row.getCell(1).getNumericCellValue());
+                        XSSFCell cell = row.getCell(1);
+
+                        if (cell.getCellType() == CellType.NUMERIC)
+                            if (!dateOfTheWeekends.isEmpty() && cell.getNumericCellValue() == dateOfTheWeekends.get(0)) {
+                                cell.setCellValue(999999);
+                                dateOfTheWeekends.remove(0);
+                            }
+                    }
+                }
+            }
+        }
+
+        if ((indexSheet - 1) == 5) {    //Febrery
+            for (int i = 0; i < 2; i++) {   //only sunday and saturday
+
+                dateOfTheWeekends = new ArrayList<>();
+                boolean end = false;
+                XSSFSheet calendarSheet = workbook.getSheetAt(0);
+                int rowStart = 14;
+                int dayWeekend = (i == 0) ? 9 : 15;
+
+                while (!end) {
+
+                    XSSFRow srcRow = calendarSheet.getRow(rowStart);
+                    XSSFCell cell = srcRow.getCell(dayWeekend);
+
+                    if (DateUtil.isCellDateFormatted(cell)) {
+                        Date date = cell.getDateCellValue();
+                        System.out.println("Date -> " + date.getDate());
+
+                        dateOfTheWeekends.add(date.getDate());
+                    } else if (cell == null || cell.getCellType() == CellType.NUMERIC || cell.getCellType() == CellType.FORMULA)
+                        end = true;
+
+                    rowStart++;
+                }
+
+                //coincidir las fechas en la hoja de horarios
+                XSSFSheet scheduleSheet = workbook.getSheetAt(indexSheet - 1);
+                System.out.println("Name of Sheet-> " + workbook.getSheetAt(indexSheet - 1).getSheetName());
+
+                //pararse en la columna de los dias, columna B(index 1) fila 16 (index 15)
+                //iterar por filas
+                for (int j = 15; j < 46; j++) {
+                    XSSFRow row = scheduleSheet.getRow(j);
+                    System.out.println("j-> " + j);
+                    if (row.getCell(1) != null) {
+                        System.out.println("Cell -> " + row.getCell(1).getNumericCellValue());
+                        XSSFCell cell = row.getCell(1);
+
+                        if (cell.getCellType() == CellType.NUMERIC)
+                            if (!dateOfTheWeekends.isEmpty() && cell.getNumericCellValue() == dateOfTheWeekends.get(0)) {
+                                cell.setCellValue(999999);
+                                dateOfTheWeekends.remove(0);
+                            }
+                    }
+                }
+            }
+        }
+
+        if ((indexSheet - 1) == 6) {    //Febrery
+            for (int i = 0; i < 2; i++) {   //only sunday and saturday
+
+                dateOfTheWeekends = new ArrayList<>();
+                boolean end = false;
+                XSSFSheet calendarSheet = workbook.getSheetAt(0);
+                int rowStart = 14;
+                int dayWeekend = (i == 0) ? 17 : 23;
+
+                while (!end) {
+
+                    XSSFRow srcRow = calendarSheet.getRow(rowStart);
+                    XSSFCell cell = srcRow.getCell(dayWeekend);
+
+                    if (DateUtil.isCellDateFormatted(cell)) {
+                        Date date = cell.getDateCellValue();
+                        System.out.println("Date -> " + date.getDate());
+
+                        dateOfTheWeekends.add(date.getDate());
+                    } else if (cell == null || cell.getCellType() == CellType.NUMERIC || cell.getCellType() == CellType.FORMULA)
+                        end = true;
+
+                    rowStart++;
+                }
+
+                //coincidir las fechas en la hoja de horarios
+                XSSFSheet scheduleSheet = workbook.getSheetAt(indexSheet - 1);
+                System.out.println("Name of Sheet-> " + workbook.getSheetAt(indexSheet - 1).getSheetName());
+
+                //pararse en la columna de los dias, columna B(index 1) fila 16 (index 15)
+                //iterar por filas
+                for (int j = 15; j < 45; j++) {
+                    XSSFRow row = scheduleSheet.getRow(j);
+                    System.out.println("j-> " + j);
+                    if (row.getCell(1) != null) {
+                        System.out.println("Cell -> " + row.getCell(1).getNumericCellValue());
+                        XSSFCell cell = row.getCell(1);
+
+                        if (cell.getCellType() == CellType.NUMERIC)
+                            if (!dateOfTheWeekends.isEmpty() && cell.getNumericCellValue() == dateOfTheWeekends.get(0)) {
+                                cell.setCellValue(999999);
+                                dateOfTheWeekends.remove(0);
+                            }
+                    }
+                }
+            }
+        }
+
+        if ((indexSheet - 1) == 7) {    //July
+            for (int i = 0; i < 2; i++) {   //only sunday and saturday
+
+                dateOfTheWeekends = new ArrayList<>();
+                boolean end = false;
+                XSSFSheet calendarSheet = workbook.getSheetAt(0);
+                int rowStart = 24;
+                int dayWeekend = (i == 0) ? 1 : 7;
+
+                while (!end) {
+
+                    XSSFRow srcRow = calendarSheet.getRow(rowStart);
+                    XSSFCell cell = srcRow.getCell(dayWeekend);
+
+                    if (DateUtil.isCellDateFormatted(cell)) {
+                        Date date = cell.getDateCellValue();
+                        System.out.println("Date -> " + date.getDate());
+
+                        dateOfTheWeekends.add(date.getDate());
+                    } else if (cell == null || cell.getCellType() == CellType.NUMERIC || cell.getCellType() == CellType.FORMULA)
+                        end = true;
+
+                    rowStart++;
+                }
+
+                //coincidir las fechas en la hoja de horarios
+                XSSFSheet scheduleSheet = workbook.getSheetAt(indexSheet - 1);
+                System.out.println("Name of Sheet-> " + workbook.getSheetAt(indexSheet - 1).getSheetName());
+
+                //pararse en la columna de los dias, columna B(index 1) fila 16 (index 15)
+                //iterar por filas
+                for (int j = 15; j < 46; j++) {
+                    XSSFRow row = scheduleSheet.getRow(j);
+                    System.out.println("j-> " + j);
+                    if (row.getCell(1) != null) {
+                        System.out.println("Cell -> " + row.getCell(1).getNumericCellValue());
+                        XSSFCell cell = row.getCell(1);
+
+                        if (cell.getCellType() == CellType.NUMERIC)
+                            if (!dateOfTheWeekends.isEmpty() && cell.getNumericCellValue() == dateOfTheWeekends.get(0)) {
+                                cell.setCellValue(999999);
+                                dateOfTheWeekends.remove(0);
+                            }
+                    }
+                }
+            }
+        }
+
+        if ((indexSheet - 1) == 8) {    //August
+            for (int i = 0; i < 2; i++) {   //only sunday and saturday
+
+                dateOfTheWeekends = new ArrayList<>();
+                boolean end = false;
+                XSSFSheet calendarSheet = workbook.getSheetAt(0);
+                int rowStart = 24;
+                int dayWeekend = (i == 0) ? 9 : 15;
+
+                while (!end) {
+
+                    XSSFRow srcRow = calendarSheet.getRow(rowStart);
+                    XSSFCell cell = srcRow.getCell(dayWeekend);
+
+                    if (DateUtil.isCellDateFormatted(cell)) {
+                        Date date = cell.getDateCellValue();
+                        System.out.println("Date -> " + date.getDate());
+
+                        dateOfTheWeekends.add(date.getDate());
+                    } else if (cell == null || cell.getCellType() == CellType.NUMERIC || cell.getCellType() == CellType.FORMULA)
+                        end = true;
+
+                    rowStart++;
+                }
+
+                //coincidir las fechas en la hoja de horarios
+                XSSFSheet scheduleSheet = workbook.getSheetAt(indexSheet - 1);
+                System.out.println("Name of Sheet-> " + workbook.getSheetAt(indexSheet - 1).getSheetName());
+
+                //pararse en la columna de los dias, columna B(index 1) fila 16 (index 15)
+                //iterar por filas
+                for (int j = 15; j < 46; j++) {
+                    XSSFRow row = scheduleSheet.getRow(j);
+                    System.out.println("j-> " + j);
+                    if (row.getCell(1) != null) {
+                        System.out.println("Cell -> " + row.getCell(1).getNumericCellValue());
+                        XSSFCell cell = row.getCell(1);
+
+                        if (cell.getCellType() == CellType.NUMERIC)
+                            if (!dateOfTheWeekends.isEmpty() && cell.getNumericCellValue() == dateOfTheWeekends.get(0)) {
+                                cell.setCellValue(999999);
+                                dateOfTheWeekends.remove(0);
+                            }
+                    }
+                }
+            }
+        }
+
+        if ((indexSheet - 1) == 9) {    //September
+            for (int i = 0; i < 2; i++) {   //only sunday and saturday
+
+                dateOfTheWeekends = new ArrayList<>();
+                boolean end = false;
+                XSSFSheet calendarSheet = workbook.getSheetAt(0);
+                int rowStart = 24;
+                int dayWeekend = (i == 0) ? 17 : 23;
+
+                while (!end) {
+
+                    XSSFRow srcRow = calendarSheet.getRow(rowStart);
+                    XSSFCell cell = srcRow.getCell(dayWeekend);
+
+                    if (DateUtil.isCellDateFormatted(cell)) {
+                        Date date = cell.getDateCellValue();
+                        System.out.println("Date -> " + date.getDate());
+
+                        dateOfTheWeekends.add(date.getDate());
+                    } else if (cell == null || cell.getCellType() == CellType.NUMERIC || cell.getCellType() == CellType.FORMULA)
+                        end = true;
+
+                    rowStart++;
+                }
+
+                //coincidir las fechas en la hoja de horarios
+                XSSFSheet scheduleSheet = workbook.getSheetAt(indexSheet - 1);
+                System.out.println("Name of Sheet-> " + workbook.getSheetAt(indexSheet - 1).getSheetName());
+
+                //pararse en la columna de los dias, columna B(index 1) fila 16 (index 15)
+                //iterar por filas
+                for (int j = 15; j < 45; j++) {
+                    XSSFRow row = scheduleSheet.getRow(j);
+                    System.out.println("j-> " + j);
+                    if (row.getCell(1) != null) {
+                        System.out.println("Cell -> " + row.getCell(1).getNumericCellValue());
+                        XSSFCell cell = row.getCell(1);
+
+                        if (cell.getCellType() == CellType.NUMERIC)
+                            if (!dateOfTheWeekends.isEmpty() && cell.getNumericCellValue() == dateOfTheWeekends.get(0)) {
+                                cell.setCellValue(999999);
+                                dateOfTheWeekends.remove(0);
+                            }
+                    }
+                }
+            }
+        }
+
+        if ((indexSheet - 1) == 10) {    //October
+            for (int i = 0; i < 2; i++) {   //only sunday and saturday
+
+                dateOfTheWeekends = new ArrayList<>();
+                boolean end = false;
+                XSSFSheet calendarSheet = workbook.getSheetAt(0);
+                int rowStart = 33;
+                int dayWeekend = (i == 0) ? 1 : 7;
+
+                while (!end) {
+
+                    XSSFRow srcRow = calendarSheet.getRow(rowStart);
+                    XSSFCell cell = srcRow.getCell(dayWeekend);
+
+                    if (DateUtil.isCellDateFormatted(cell)) {
+                        Date date = cell.getDateCellValue();
+                        System.out.println("Date -> " + date.getDate());
+
+                        dateOfTheWeekends.add(date.getDate());
+                    } else if (cell == null || cell.getCellType() == CellType.NUMERIC || cell.getCellType() == CellType.FORMULA)
+                        end = true;
+
+                    rowStart++;
+                }
+
+                //coincidir las fechas en la hoja de horarios
+                XSSFSheet scheduleSheet = workbook.getSheetAt(indexSheet - 1);
+                System.out.println("Name of Sheet-> " + workbook.getSheetAt(indexSheet - 1).getSheetName());
+
+                //pararse en la columna de los dias, columna B(index 1) fila 16 (index 15)
+                //iterar por filas
+                for (int j = 15; j < 46; j++) {
+                    XSSFRow row = scheduleSheet.getRow(j);
+                    System.out.println("j-> " + j);
+                    if (row.getCell(1) != null) {
+                        System.out.println("Cell -> " + row.getCell(1).getNumericCellValue());
+                        XSSFCell cell = row.getCell(1);
+
+                        if (cell.getCellType() == CellType.NUMERIC)
+                            if (!dateOfTheWeekends.isEmpty() && cell.getNumericCellValue() == dateOfTheWeekends.get(0)) {
+                                cell.setCellValue(999999);
+                                dateOfTheWeekends.remove(0);
+                            }
+                    }
+                }
+            }
+        }
+
+        if ((indexSheet - 1) == 11) {    //November
+            for (int i = 0; i < 2; i++) {   //only sunday and saturday
+
+                dateOfTheWeekends = new ArrayList<>();
+                boolean end = false;
+                XSSFSheet calendarSheet = workbook.getSheetAt(0);
+                int rowStart = 33;
+                int dayWeekend = (i == 0) ? 9 : 15;
+
+                while (!end) {
+
+                    XSSFRow srcRow = calendarSheet.getRow(rowStart);
+                    XSSFCell cell = srcRow.getCell(dayWeekend);
+
+                    if (DateUtil.isCellDateFormatted(cell)) {
+                        Date date = cell.getDateCellValue();
+                        System.out.println("Date -> " + date.getDate());
+
+                        dateOfTheWeekends.add(date.getDate());
+                    } else if (cell == null || cell.getCellType() == CellType.NUMERIC || cell.getCellType() == CellType.FORMULA)
+                        end = true;
+
+                    rowStart++;
+                }
+
+                //coincidir las fechas en la hoja de horarios
+                XSSFSheet scheduleSheet = workbook.getSheetAt(indexSheet - 1);
+                System.out.println("Name of Sheet-> " + workbook.getSheetAt(indexSheet - 1).getSheetName());
+
+                //pararse en la columna de los dias, columna B(index 1) fila 16 (index 15)
+                //iterar por filas
+                for (int j = 15; j < 45; j++) {
+                    XSSFRow row = scheduleSheet.getRow(j);
+                    System.out.println("j-> " + j);
+                    if (row.getCell(1) != null) {
+                        System.out.println("Cell -> " + row.getCell(1).getNumericCellValue());
+                        XSSFCell cell = row.getCell(1);
+
+                        if (cell.getCellType() == CellType.NUMERIC)
+                            if (!dateOfTheWeekends.isEmpty() && cell.getNumericCellValue() == dateOfTheWeekends.get(0)) {
+                                cell.setCellValue(999999);
+                                dateOfTheWeekends.remove(0);
+                            }
+                    }
+                }
+            }
+        }
+
+        if ((indexSheet - 1) == 12) {    //December
+            for (int i = 0; i < 2; i++) {   //only sunday and saturday
+
+                dateOfTheWeekends = new ArrayList<>();
+                boolean end = false;
+                XSSFSheet calendarSheet = workbook.getSheetAt(0);
+                int rowStart = 33;
+                int dayWeekend = (i == 0) ? 17 : 23;
+
+                while (!end) {
+
+                    XSSFRow srcRow = calendarSheet.getRow(rowStart);
+                    XSSFCell cell = srcRow.getCell(dayWeekend);
+
+                    if (DateUtil.isCellDateFormatted(cell)) {
+                        Date date = cell.getDateCellValue();
+                        System.out.println("Date -> " + date.getDate());
+
+                        dateOfTheWeekends.add(date.getDate());
+                    } else if (cell == null || cell.getCellType() == CellType.NUMERIC || cell.getCellType() == CellType.FORMULA)
+                        end = true;
+
+                    rowStart++;
+                }
+
+                //coincidir las fechas en la hoja de horarios
+                XSSFSheet scheduleSheet = workbook.getSheetAt(indexSheet - 1);
+                System.out.println("Name of Sheet-> " + workbook.getSheetAt(indexSheet - 1).getSheetName());
+
+                //pararse en la columna de los dias, columna B(index 1) fila 16 (index 15)
+                //iterar por filas
+                for (int j = 15; j < 46; j++) {
+                    XSSFRow row = scheduleSheet.getRow(j);
+                    System.out.println("j-> " + j);
+                    if (row.getCell(1) != null) {
+                        System.out.println("Cell -> " + row.getCell(1).getNumericCellValue());
+                        XSSFCell cell = row.getCell(1);
+
+                        if (cell.getCellType() == CellType.NUMERIC)
+                            if (!dateOfTheWeekends.isEmpty() && cell.getNumericCellValue() == dateOfTheWeekends.get(0)) {
+                                cell.setCellValue(999999);
+                                dateOfTheWeekends.remove(0);
+                            }
+                    }
+                }
+            }
+        }
+    }
+
+    private static void passWeekendToSheets(XSSFWorkbook workbook) {
+        XSSFSheet calendarSheet = workbook.getSheetAt(0);
+        int startRow = 0;
+        int startColumn = 0;
+
+        for (int i = 0; i < 3; i++) {   //recorrer filas
+            for (int j = 0; j < 4; j++) {   //recorrer columnas
+
+            }
+        }
+
+        //recorrer los meses
+        for (int i = 1; i < 13; i++) {
+
+        }
     }
 }
