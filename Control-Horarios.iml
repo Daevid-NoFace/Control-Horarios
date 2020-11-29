@@ -11,5 +11,7 @@
     <orderEntry type="library" name="ooxml-lib" level="project" />
     <orderEntry type="library" name="jfoenix-8.0.8" level="project" />
     <orderEntry type="library" name="controlsfx-8.40.15" level="project" />
+    <orderEntry type="library" name="controlsfx-samples-8.40.15" level="project" />
+    <orderEntry type="library" name="TrayNotification" level="project" />
   </component>
 </module>
