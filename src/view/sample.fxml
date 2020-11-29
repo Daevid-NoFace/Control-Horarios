@@ -9,20 +9,20 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="562.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="562.0" prefWidth="794.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
     <children>
       <Label layoutX="89.0" layoutY="30.0" prefHeight="90.0" prefWidth="587.0" text="Control de Horarios Palobiofarma">
          <font>
             <Font size="39.0" />
          </font></Label>
-      <Label fx:id="resultLabel" layoutX="338.0" layoutY="488.0" text="Label" />
+      <Label fx:id="resultLabel" layoutX="348.0" layoutY="487.0" text="Label" />
       <JFXProgressBar fx:id="progressBar" layoutX="286.0" layoutY="444.0" prefHeight="14.0" prefWidth="222.0" progress="0.0" />
       <JFXButton fx:id="generateSchedule" buttonType="RAISED" layoutX="286.0" layoutY="363.0" onAction="#mergeExcel" prefHeight="59.0" prefWidth="222.0" style="-fx-background-color: #81D2C7;" text="Generar Horarios">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
          <font>
-            <Font name="Microsoft JhengHei" size="17.0" />
+            <Font name="SansSerif Regular" size="17.0" />
          </font>
          <graphic>
             <ImageView fitHeight="47.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true">
@@ -32,10 +32,6 @@
             </ImageView>
          </graphic>
       </JFXButton>
-      <ImageView fx:id="slideShow" fitHeight="227.0" fitWidth="794.0" layoutY="109.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@slideShow" />
-         </image>
-      </ImageView>
+      <AnchorPane fx:id="root" layoutY="108.0" prefHeight="247.0" prefWidth="794.0" />
     </children>
 </AnchorPane>
