@@ -1,0 +1,20 @@
+.menu-item1:hover {
+    -fx-border-color:#077187;
+    -fx-border-width: 0px 0px 3px 0px;
+}
+
+.menu-item2:hover {
+    -fx-border-color:#78BC61;
+    -fx-border-width: 0px 0px 3px 0px;
+}
+
+
+.menu-item3:hover {
+    -fx-border-color:#574B60;
+    -fx-border-width: 0px 0px 3px 0px;
+}
+
+
+
+
+
