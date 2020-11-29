@@ -11,12 +11,10 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Paint;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -28,14 +26,11 @@ import tray.animations.AnimationType;
 import tray.notification.NotificationType;
 import tray.notification.TrayNotification;
 
-import javax.management.Notification;
-import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -63,26 +58,29 @@ public class MainMenuController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        fileMenu.requestFocus();
         AnchorPane popupPane = new AnchorPane();
         VBox vBox = new VBox();
         JFXListView<JFXButton> list = new JFXListView<JFXButton>();
 
         JFXButton btnLoadCalendar = new JFXButton("Cargar Calendario");
-        ImageView view = new ImageView(new Image(getClass().getResourceAsStream("/resources/calendario.png")));
+        ImageView view = new ImageView(new Image("/resources/calendario.png"));
         view.setFitWidth(25);
         view.setFitHeight(25);
         btnLoadCalendar.setGraphic(view);
+        btnLoadCalendar.setCursor(Cursor.HAND);
         JFXButton btnHorary = new JFXButton("Generar Horarios");
-        view = new ImageView(new Image(getClass().getResourceAsStream("/resources/excel.png")));
-        view.setFitWidth(25);
-        view.setFitHeight(25);
-        btnHorary.setGraphic(view);
+        ImageView view1 = new ImageView(new Image(getClass().getResourceAsStream("/resources/excel.png")));
+        view1.setFitWidth(25);
+        view1.setFitHeight(25);
+        btnHorary.setGraphic(view1);
+        btnHorary.setCursor(Cursor.HAND);
         JFXButton close = new JFXButton("Cerrar");
-        view = new ImageView(new Image(getClass().getResourceAsStream("/resources/logout.png")));
-        view.setFitWidth(25);
-        view.setFitHeight(25);
-        close.setGraphic(view);
+        ImageView view2 = new ImageView(new Image(getClass().getResourceAsStream("/resources/logout.png")));
+        view2.setFitWidth(25);
+        view2.setFitHeight(25);
+        close.setGraphic(view2);
+        close.setCursor(Cursor.HAND);
 
 
 
@@ -244,7 +242,24 @@ public class MainMenuController implements Initializable {
                         notification.setNotificationType(NotificationType.SUCCESS);
                         notification.showAndDismiss(Duration.millis(5000));
                         notification.setAnimationType(AnimationType.POPUP);
-                    }
+                        File file = new File("Test.xlsx");
+
+                        //first check if Desktop is supported by Platform or not
+                        try{
+                            if(!Desktop.isDesktopSupported()){
+                                System.out.println("Desktop is not supported");
+                                return;
+                            }
+
+                            Desktop desktop = Desktop.getDesktop();
+
+                            //let's try to open PDF file
+                            if(file.exists()) desktop.open(file);
+
+                        }catch (Exception i){
+                            i.printStackTrace();
+                        }
+                                            }
                 });
 
                 longTask.setOnRunning(new EventHandler<WorkerStateEvent>() {

@@ -15,6 +15,7 @@ public class Main extends Application {
         ScalableContentPane scale = new ScalableContentPane();
         Parent root = FXMLLoader.load(getClass().getResource("../view/MainMenu.fxml"));
         scale.setContent(root);
+        root.requestFocus();
         primaryStage.setTitle("Hello World");
         primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.setScene(new Scene(scale));
