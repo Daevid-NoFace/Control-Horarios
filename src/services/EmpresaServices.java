@@ -34,6 +34,25 @@ public class EmpresaServices {
         return lista;
     }
 
+    public String getEmpresaNombreByCod(int cod){
+        String empresa = null;
+        try{
+            Connection conexion = ServicesLocator.getConnection();
+            String consulta = "Select empresa.nombre_empresa from empresa where empresa.cod_empresa = ?";
+            PreparedStatement prepare = conexion.prepareStatement(consulta);//para consultas
+            prepare.setInt(1,cod);
+            prepare.execute();
+            ResultSet result = prepare.getResultSet();//para quedarme con lo q devuelve la consulta
+            while (result.next()){ //para varias filas
+               empresa = result.getString(1);
+            }
+            conexion.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return empresa;
+    }
+
 
     public void readPicture(int materialId, String filename) {
         // update sql
@@ -122,5 +141,25 @@ public class EmpresaServices {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public ArrayList<String> nombreEmpresas(){
+        ArrayList<String> lista= new ArrayList<>();
+        try{
+            Connection conexion = ServicesLocator.getConnection();
+            String consulta = "Select empresa.nombre_empresa from empresa";
+            PreparedStatement prepare = conexion.prepareStatement(consulta);//para consultas
+            prepare.execute();
+            ResultSet result = prepare.getResultSet();//para quedarme con lo q devuelve la consulta
+            while (result.next()){ //para varias filas
+                lista.add(result.getString(1));
+            }
+            conexion.close();
+        }
+        catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return lista;
     }
 }

@@ -313,6 +313,11 @@ public class MainMenuController implements Initializable {
         return slides;
     }
 
+    @FXML
+    void showEmployesData(ActionEvent event) {
+
+    }
+
     public AnchorPane getRoot() {
         return root;
     }

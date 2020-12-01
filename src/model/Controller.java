@@ -300,7 +300,14 @@ public class Controller {
             file = new File(listaEmpleados.get(j).getNombre() + ".xlsx");
 
             //FileInputStream obtains input bytes from the image file
-            InputStream inputStream = new FileInputStream("src/resources/medibiofarma.png");
+
+            InputStream inputStream = null;
+            if(empresa.getNombre().contains("Palobiofarma")){
+                inputStream = new FileInputStream("src/resources/palobiofarma.png");
+            }
+            else{
+                inputStream = new FileInputStream("src/resources/medibiofarma.png");
+            }
 
             //Get the contents of an InputStream as a byte[].
             byte[] bytes = IOUtils.toByteArray(inputStream);

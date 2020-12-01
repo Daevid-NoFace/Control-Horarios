@@ -7,17 +7,20 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import model.Empleado;
+import services.ServicesLocator;
 
 public class TestConnection extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         ScalableContentPane scale = new ScalableContentPane();
-        Parent root = FXMLLoader.load(getClass().getResource("../view/SeleccionEmpresa.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("../view/EmployesManagement.fxml"));
+        //Parent root = FXMLLoader.load(getClass().getResource("../view/SeleccionEmpresa.fxml"));
         scale.setContent(root);
         root.requestFocus();
         primaryStage.setTitle("Hello World");
-        primaryStage.initStyle(StageStyle.UNDECORATED);
+        //primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.setScene(new Scene(scale));
         primaryStage.show();
     }
