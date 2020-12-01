@@ -46,17 +46,19 @@ public class SeleccionEmpresaController implements Initializable {
         ArrayList<Empleado> lista = ServicesLocator.getEmpleado().listadoEmpleadosXEmpresa(listaEmpresas.get(empresaComboBox.getSelectionModel().getSelectedIndex()).getNombre());
         System.out.println(lista.size());
 
-        FileInputStream inputStream1 = new FileInputStream("2021.xlsx");
-        FileInputStream inputStream2 = new FileInputStream("Horary Model.xlsx");
+            listFiles = new ArrayList<>();
+            File inputStream1 = new File("2021.xlsx");
+            FileInputStream inputStream2 = new FileInputStream("Horary Model.xlsx");
 
-        listFiles.add(inputStream1);
-        listFiles.add(inputStream2);
-        //list.add(inputStream2);
-        if(listFiles.size()<2){
-            System.out.println("ERROR");
-        }
+            //listFiles.add(inputStream1);
+            listFiles.add(inputStream2);
+            //list.add(inputStream2);
+            if (listFiles.size() < 2) {
+                System.out.println("ERROR");
+            }
 
-        Controller.mergeExcelFiles(lista, listaEmpresas.get(empresaComboBox.getSelectionModel().getSelectedIndex()), listFiles);
+                Controller.mergeExcelFiles(lista, listaEmpresas.get(empresaComboBox.getSelectionModel().getSelectedIndex()), inputStream1);
+
 
         /*for (int i = 0; i < lista.size(); i++) {
             System.out.println("i: " + i);

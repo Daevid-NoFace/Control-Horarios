@@ -16,7 +16,7 @@ import java.util.*;
 
 public class Controller {
 
-    public static void mergeExcelFiles(File file, List<FileInputStream> list) throws IOException {
+   /* public static void mergeExcelFiles(File file, List<FileInputStream> list) throws IOException {
         ArrayList<String> cell_formulas = generateCellToFormula();
 
         XSSFWorkbook book = new XSSFWorkbook();
@@ -103,12 +103,12 @@ public class Controller {
         }*/
 
 
-            writeFile(book, file);
-        } catch (Exception e) {
+    //writeFile(book, file);
+       /* } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-    }
+    }*/
 
     private static void copySheets(XSSFWorkbook newWorkbook, XSSFSheet newSheet, XSSFSheet sheet) {
         copySheets(newWorkbook, newSheet, sheet, true);
@@ -195,6 +195,8 @@ public class Controller {
     protected static void writeFile(XSSFWorkbook book, File file) throws Exception {
         FileOutputStream out = new FileOutputStream(file, true);
         book.write(out);
+        book.close();
+        //out.flush();
         out.close();
     }
 
@@ -223,7 +225,7 @@ public class Controller {
 
         Iterator<Row> rowIterator = calendarSheet.iterator();
 
-        while(rowIterator.hasNext()) {
+        while (rowIterator.hasNext()) {
             XSSFRow row = (XSSFRow) rowIterator.next();
 
             Iterator<Cell> cellIterator = row.iterator();
@@ -270,7 +272,7 @@ public class Controller {
         }
     }
 
-    private static void fixAdyacentsCell(XSSFCell cell, XSSFRow row, CellStyle style){
+    private static void fixAdyacentsCell(XSSFCell cell, XSSFRow row, CellStyle style) {
         cell.setCellStyle(style);
         cell.setCellType(CellType.NUMERIC);
         row.getCell(2).setCellStyle(style);
@@ -281,11 +283,18 @@ public class Controller {
 
     }
 
-    public static void mergeExcelFiles(ArrayList<Empleado> listaEmpleados, Empresa empresa, List<FileInputStream> list) throws IOException {
+   public static void mergeExcelFiles(ArrayList<Empleado> listaEmpleados, Empresa empresa, File calendar) throws IOException {
         ArrayList<String> cell_formulas = generateCellToFormula();
+
+
         File file = null;
 
         for (int j = 0; j < listaEmpleados.size(); j++) {
+            ArrayList<FileInputStream> list = new ArrayList<>();
+            FileInputStream inputStream1 = new FileInputStream(calendar);
+            FileInputStream inputStream2 = new FileInputStream("Horary Model.xlsx");
+            list.add(inputStream1);
+            list.add(inputStream2);
             XSSFWorkbook book = new XSSFWorkbook();
             XSSFSheet sheet = null;
             file = new File(listaEmpleados.get(j).getNombre() + ".xlsx");
@@ -362,6 +371,8 @@ public class Controller {
                             //passWeekendToSheets(book, total_sheets);
                         }
                     }
+                   /*b.close();
+                   fin.close();*/
                 }
                 setDataWorkerInHoraryModel(book, empresa, listaEmpleados.get(j));
                 passWeekendToSheets(book);
@@ -370,8 +381,12 @@ public class Controller {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
+            inputStream1.close();
+            inputStream2.close();
         }
     }
+
+
 
     private static void setDataWorkerInHoraryModel(XSSFWorkbook book, Empresa empresa, Empleado empleado) {
 
@@ -997,5 +1012,4 @@ public class Controller {
             }
         }
     }*/
-
 }

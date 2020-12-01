@@ -226,7 +226,7 @@ public class MainMenuController implements Initializable {
                 Task<Void> longTask = new Task<Void>() {
                     @Override
                     protected Void call() throws Exception {
-                        Controller.mergeExcelFiles(new File("Test.xlsx"), listFiles);
+                        //Controller.mergeExcelFiles(new File("Test.xlsx"), listFiles);
                         //progressBar.setProgress(this.getProgress());
                         return null;
                     }
