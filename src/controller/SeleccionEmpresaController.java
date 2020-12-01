@@ -1,11 +1,14 @@
 package controller;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.Controller;
 import model.Empleado;
@@ -14,7 +17,6 @@ import services.ServicesLocator;
 import tray.animations.AnimationType;
 import tray.notification.NotificationType;
 
-import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -28,6 +30,12 @@ public class SeleccionEmpresaController implements Initializable {
     @FXML
     private JFXComboBox<String> empresaComboBox;
 
+    @FXML
+    private JFXButton aceptarSeleccionEmpresa;
+
+    //Referencia al main de la app
+    private MainMenuController mainMenuController;
+
     private ArrayList<FileInputStream> listFiles;
     private ArrayList<Empresa> listaEmpresas;
 
@@ -40,6 +48,10 @@ public class SeleccionEmpresaController implements Initializable {
             nombresEmpresas.add(empresa.getNombre());
         }
         empresaComboBox.setItems(FXCollections.observableArrayList(nombresEmpresas));
+    }
+
+    public void setMainMenuController(MainMenuController mainMenuController) {
+        this.mainMenuController = mainMenuController;
     }
 
     public void mergeExcel(javafx.event.ActionEvent actionEvent) throws IOException {
@@ -64,5 +76,17 @@ public class SeleccionEmpresaController implements Initializable {
             System.out.println("i: " + i);
             Controller.mergeExcelFiles(new File(empresaComboBox.getSelectionModel().getSelectedItem().getNombre() + lista.get(i).getNombre()  + ".xlsx"), listFiles);
         }*/
+    }
+
+    public void guardarCambios(ActionEvent event) {
+        Empresa empresa = listaEmpresas.get(empresaComboBox.getSelectionModel().getSelectedIndex());
+        MainMenuController.empresa = empresa;
+
+        cerrarVentana();
+    }
+
+    private void cerrarVentana() {
+        Stage stage = (Stage) aceptarSeleccionEmpresa.getScene().getWindow();
+        stage.close();
     }
 }

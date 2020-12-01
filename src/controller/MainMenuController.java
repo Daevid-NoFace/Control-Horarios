@@ -10,18 +10,26 @@ import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import main.Main;
 import model.Controller;
 
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
+import model.Empleado;
+import model.Empresa;
+import services.ServicesLocator;
 import tray.animations.AnimationType;
 import tray.notification.NotificationType;
 import tray.notification.TrayNotification;
@@ -50,9 +58,10 @@ public class MainMenuController implements Initializable {
     @FXML
     private AnchorPane root;
 
+    public static Empresa empresa;
+    private File calendarFile;
 
     private ArrayList<FileInputStream> listFiles;
-
 
     ImageView[] slides;
 
@@ -98,7 +107,8 @@ public class MainMenuController implements Initializable {
             popup.hide();
         });
         btnHorary.setOnAction(event -> {
-            mergeExcel(event);
+            //mergeExcel(event);
+            mostrarPanelSeleccionarEmpresa(event);
             popup.hide();
 
         });
@@ -181,6 +191,7 @@ public class MainMenuController implements Initializable {
         try {
             if (file != null) {
                listFiles.add(new FileInputStream(file));
+               calendarFile = file;
                notification.setMessage("Calendario importado con éxito");
                notification.setTitle("Importación de calendario");
                notification.setNotificationType(NotificationType.SUCCESS);
@@ -223,7 +234,8 @@ public class MainMenuController implements Initializable {
                 Task<Void> longTask = new Task<Void>() {
                     @Override
                     protected Void call() throws Exception {
-                        //Controller.mergeExcelFiles(new File("Test.xlsx"), listFiles);
+                        ArrayList<Empleado> lista = ServicesLocator.getEmpleado().listadoEmpleadosXEmpresa(empresa.getNombre());
+                        Controller.mergeExcelFiles(lista, empresa, calendarFile);
                         //progressBar.setProgress(this.getProgress());
                         return null;
                     }
@@ -279,8 +291,33 @@ public class MainMenuController implements Initializable {
     }
 
     @FXML
-    void showCalendarMenu(ActionEvent event) {
+    void showCalendarMenu(ActionEvent event) throws IOException {
 
+    }
+
+    private void mostrarPanelSeleccionarEmpresa(ActionEvent event) {
+        try {
+            System.out.println("Panel de seleccionar empresas" + "\n" + "-------------------------");
+
+            FXMLLoader loader =new FXMLLoader();
+            loader.setLocation(MainMenuController.class.getResource("../view/SeleccionEmpresa.fxml"));
+            AnchorPane page = (AnchorPane) loader.load();
+
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Seleccionar Empresa");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.setAlwaysOnTop(true);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            //setController
+            SeleccionEmpresaController controller =loader.getController();
+            controller.setMainMenuController(this);
+
+            dialogStage.showAndWait();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -317,4 +354,36 @@ public class MainMenuController implements Initializable {
     public ArrayList<FileInputStream> getFiles(){
         return this.listFiles;
     }
+
+    //CREATION OF FRAMES
+    /*public void createPage(Object instance, AnchorPane home, String loc) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(MainMenuController.class.getResource(loc));
+        home = loader.load();
+
+        if (instance instanceof CreateStructureController) {
+            instance = loader.getController();
+            ((CreateStructureController) instance).setMainController(this);
+        } if (instance instanceof StructureManagementController) {
+            instance = loader.getController();
+            ((StructureManagementController) instance).setMainController(this);
+        } if (instance instanceof CalculationsController) {
+            instance = loader.getController();
+            ((CalculationsController) instance).setMainController(this);
+        }
+
+        setNode(home);
+    }
+
+    public void setNode(Node node) {
+        innerPane.getChildren().clear();
+        innerPane.getChildren().add(node);
+        FadeTransition ft = new FadeTransition(Duration.millis(2000));
+        ft.setNode(node);
+        ft.setFromValue(0.1);
+        ft.setToValue(1);
+        ft.setCycleCount(1);
+        ft.setAutoReverse(false);
+        ft.play();
+    }*/
 }

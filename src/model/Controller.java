@@ -218,7 +218,6 @@ public class Controller {
         return cells;
     }
 
-
     private static void passWeekendToSheets(XSSFWorkbook workbook) {
 
         XSSFSheet calendarSheet = workbook.getSheetAt(0);
@@ -291,7 +290,6 @@ public class Controller {
 
    public static void mergeExcelFiles(ArrayList<Empleado> listaEmpleados, Empresa empresa, File calendar) throws IOException {
         ArrayList<String> cell_formulas = generateCellToFormula();
-
 
         File file = null;
 
