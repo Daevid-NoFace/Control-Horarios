@@ -1,9 +1,24 @@
 package database;
 
-import services.ServicesLocator;
+import eu.mihosoft.scaledfx.ScalableContentPane;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
-public class TestConnection {
-    public static void main(String[] args) {
-        //ServicesLocator.getEmpresa().readPicture(1,"Logo.png");
+public class TestConnection extends Application {
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        ScalableContentPane scale = new ScalableContentPane();
+        Parent root = FXMLLoader.load(getClass().getResource("../view/SeleccionEmpresa.fxml"));
+        scale.setContent(root);
+        root.requestFocus();
+        primaryStage.setTitle("Hello World");
+        primaryStage.initStyle(StageStyle.UNDECORATED);
+        primaryStage.setScene(new Scene(scale));
+        primaryStage.show();
     }
 }

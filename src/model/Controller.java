@@ -9,6 +9,7 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.util.IOUtils;
 import org.apache.poi.xssf.usermodel.*;
+import services.ServicesLocator;
 
 import java.io.*;
 import java.util.*;
@@ -192,7 +193,7 @@ public class Controller {
     }
 
     protected static void writeFile(XSSFWorkbook book, File file) throws Exception {
-        FileOutputStream out = new FileOutputStream(file);
+        FileOutputStream out = new FileOutputStream(file, true);
         book.write(out);
         out.close();
     }
@@ -242,6 +243,12 @@ public class Controller {
 
                                 pass(workbook.getSheetAt(mouth + 1), day, cell.getCellStyle());
                             }
+
+                            if ((date.getMonth() == 0 || date.getMonth() == 2 || date.getMonth() == 4 || date.getMonth() == 6 || date.getMonth() == 7 || date.getMonth() == 9 || date.getMonth() == 11) && date.getDate() == 31) {
+                                workbook.getSheetAt(date.getMonth() + 1).getRow(10).getCell(5).setCellValue(date);
+                            } else if ((date.getMonth() == 3 || date.getMonth() == 5 || date.getMonth() == 8 || date.getMonth() == 10) && date.getDate() == 30) {
+                                workbook.getSheetAt(date.getMonth() + 1).getRow(10).getCell(5).setCellValue(date);
+                            } //falta febrero
                         }
                     }
                 }
@@ -272,6 +279,123 @@ public class Controller {
         row.getCell(6).setCellFormula(null);
         row.getCell(6).setCellValue(" ");
 
+    }
+
+    public static void mergeExcelFiles(ArrayList<Empleado> listaEmpleados, Empresa empresa, List<FileInputStream> list) throws IOException {
+        ArrayList<String> cell_formulas = generateCellToFormula();
+        File file = null;
+
+        for (int j = 0; j < listaEmpleados.size(); j++) {
+            XSSFWorkbook book = new XSSFWorkbook();
+            XSSFSheet sheet = null;
+            file = new File(listaEmpleados.get(j).getNombre() + ".xlsx");
+
+            //FileInputStream obtains input bytes from the image file
+            InputStream inputStream = new FileInputStream("src/resources/medibiofarma.png");
+
+            //Get the contents of an InputStream as a byte[].
+            byte[] bytes = IOUtils.toByteArray(inputStream);
+            //Adds a picture to the workbook
+            int pictureIdx = book.addPicture(bytes, Workbook.PICTURE_TYPE_PNG);
+            //close the input stream
+            inputStream.close();
+
+            //to control the sheet where paste the picture
+            String calendar_year = "";
+            String location = "";
+            int total_sheets = 0;
+            try {
+                for (FileInputStream fin : list) {
+                    XSSFWorkbook b = new XSSFWorkbook(fin);
+                    for (int i = 0; i < b.getNumberOfSheets(); i++) {
+                        sheet = book.createSheet(b.getSheetName(i));
+                        copySheets(book, sheet, b.getSheetAt(i));
+                        total_sheets++;
+                        if (book.getNumberOfSheets() == 1) {
+                            calendar_year = book.getSheetAt(0).getRow(0).getCell(1).getStringCellValue();
+                            calendar_year = calendar_year.split(" ")[0];
+                            location = book.getSheetAt(0).getRow(0).getCell(6).getStringCellValue();
+                        }
+                        if (total_sheets > 1) {
+                            //LOGO Creation
+                            //Returns an object that handles instantiating concrete classes
+                            CreationHelper helper = book.getCreationHelper();
+
+                            //Creates the top-level drawing patriarch.
+                            Drawing drawing = sheet.createDrawingPatriarch();
+
+                            //Create an anchor that is attached to the worksheet
+                            ClientAnchor anchor = helper.createClientAnchor();
+                            //set top-left corner for the image
+                            anchor.setCol1(1);
+                            anchor.setRow1(1);
+
+                            //Creates a picture
+                            Picture pict = drawing.createPicture(anchor, pictureIdx);
+                            //Reset the image to the original size
+                            pict.resize(3, 3);
+
+                            //Push date
+                            Cell cell = sheet.getRow(53).getCell(6);
+                            if (cell != null) {
+                                cell.setCellValue(Integer.parseInt(calendar_year));
+                                cell.setCellType(CellType.NUMERIC);
+                                System.out.println(cell.getNumericCellValue());
+                            }
+
+                            cell = sheet.getRow(53).getCell(1);
+                            if (cell != null) {
+                                cell.setCellValue("En " + location + " a");
+                                cell.setCellType(CellType.STRING);
+                            }
+
+                            cell = sheet.getRow(48).getCell(6);
+                            if (cell != null) {
+                                //-2 para qiue coincida el numero de la lista con el numero de la hoja
+                                cell.setCellFormula("'" + book.getSheetAt(0).getSheetName() + "'" + "" +
+                                        cell_formulas.get(total_sheets - 2));
+                                System.out.println(cell.getCellFormula());
+                            }
+
+
+                            //passWeekendsToSheets
+                            //passWeekendToSheets(book, total_sheets);
+                        }
+                    }
+                }
+                setDataWorkerInHoraryModel(book, empresa, listaEmpleados.get(j));
+                passWeekendToSheets(book);
+                writeFile(book, file);
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private static void setDataWorkerInHoraryModel(XSSFWorkbook book, Empresa empresa, Empleado empleado) {
+
+        for (int i = 1; i < 13; i++) {
+            //set name empresa
+            book.getSheetAt(i).getRow(7).getCell(2).setCellValue(empresa.getNombre());
+
+            //set CIF empresa
+            book.getSheetAt(i).getRow(8).getCell(2).setCellValue(empresa.getNif());
+
+            //set Centro de trabajo
+            book.getSheetAt(i).getRow(9).getCell(2).setCellValue(empresa.getCentro_de_trabajo());
+
+            book.getSheetAt(i).getRow(10).getCell(2).setCellValue(empresa.getC_c_c());
+
+            //empleado
+            book.getSheetAt(i).getRow(7).getCell(5).setCellValue(empleado.getNombre() + empleado.getPrimer_apellido() + empleado.getSegundo_apellido());
+
+            //set CIF empresa
+            book.getSheetAt(i).getRow(8).getCell(5).setCellValue(empleado.getNif());
+
+            //set Centro de trabajo
+            book.getSheetAt(i).getRow(9).getCell(5).setCellValue(empleado.getNumero_afiliacion());
+        }
     }
 
        /* private static void passWeekendToSheets(XSSFWorkbook workbook, int indexSheet) {
