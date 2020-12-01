@@ -1,18 +1,22 @@
 package model;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import services.ServicesLocator;
+
 public class Empleado {
     private int cod_empleado;
-    private String nombre;
-    private String primer_apellido;
-    private String segundo_apellido;
+    private StringProperty nombre;
+    private StringProperty primer_apellido;
+    private StringProperty segundo_apellido;
     private String nif;
     private String numero_afiliacion;
     private int cod_empresa;
 
     public Empleado(String nombre, String primer_apellido, String segundo_apellido, String nif, String numero_afiliacion, int cod_empresa) {
-        this.nombre = nombre;
-        this.primer_apellido = primer_apellido;
-        this.segundo_apellido = segundo_apellido;
+        this.nombre = new SimpleStringProperty(nombre);
+        this.primer_apellido = new SimpleStringProperty(primer_apellido);
+        this.segundo_apellido = new SimpleStringProperty(segundo_apellido);
         this.nif = nif;
         this.numero_afiliacion = numero_afiliacion;
         this.cod_empresa = cod_empresa;
@@ -20,9 +24,9 @@ public class Empleado {
 
     public Empleado(int cod_empleado, String nombre, String primer_apellido, String segundo_apellido, String nif, String numero_afiliacion, int cod_empresa) {
         this.cod_empleado = cod_empleado;
-        this.nombre = nombre;
-        this.primer_apellido = primer_apellido;
-        this.segundo_apellido = segundo_apellido;
+        this.nombre = new SimpleStringProperty(nombre);
+        this.primer_apellido = new SimpleStringProperty(primer_apellido);
+        this.segundo_apellido = new SimpleStringProperty(segundo_apellido);
         this.nif = nif;
         this.numero_afiliacion = numero_afiliacion;
         this.cod_empresa = cod_empresa;
@@ -37,27 +41,39 @@ public class Empleado {
     }
 
     public String getNombre() {
+        return nombre.get();
+    }
+
+    public StringProperty getNombreProperty() {
         return nombre;
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre;
+        this.nombre.set(nombre);
     }
 
     public String getPrimer_apellido() {
+        return primer_apellido.get();
+    }
+
+    public StringProperty getPrimer_apellidoProperty() {
         return primer_apellido;
     }
 
     public void setPrimer_apellido(String primer_apellido) {
-        this.primer_apellido = primer_apellido;
+        this.primer_apellido.set(primer_apellido);
     }
 
     public String getSegundo_apellido() {
-        return segundo_apellido;
+        return segundo_apellido.get();
     }
 
     public void setSegundo_apellido(String segundo_apellido) {
-        this.segundo_apellido = segundo_apellido;
+        this.segundo_apellido.set(segundo_apellido);
+    }
+
+    public StringProperty getSegundo_apellidoProperty() {
+        return segundo_apellido;
     }
 
     public String getNif() {
