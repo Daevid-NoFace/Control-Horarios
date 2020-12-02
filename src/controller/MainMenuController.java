@@ -10,12 +10,15 @@ import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.Controller;
@@ -284,6 +287,31 @@ public class MainMenuController implements Initializable {
     @FXML
     void showCalendarMenu(ActionEvent event) {
 
+    }
+
+    public void mostrarPanelEmpleados(ActionEvent event) {
+        try {
+            System.out.println("Panel de edicion de empleados" + "\n" + "-------------------------");
+
+            FXMLLoader loader =new FXMLLoader();
+            loader.setLocation(MainMenuController.class.getResource("../view/EdicionEmpleado.fxml"));
+            AnchorPane page = (AnchorPane) loader.load();
+
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Gestionar Empleados");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.setAlwaysOnTop(true);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            //setController
+            EmployesManagementController controller =loader.getController();
+            controller.setMainMenuController(this);
+
+            dialogStage.showAndWait();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
