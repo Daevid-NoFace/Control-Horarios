@@ -10,7 +10,7 @@ public class Connection {
 
         try{
             Class.forName("org.sqlite.JDBC");
-            String url = "jdbc:sqlite:src/database/palobiofarma.db";
+            String url = "jdbc:sqlite:palobiofarma.db";
             connection = DriverManager.getConnection(url);
             System.out.println("Conectado");
         }catch (Exception e){
