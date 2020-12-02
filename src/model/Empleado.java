@@ -32,6 +32,15 @@ public class Empleado {
         this.cod_empresa = cod_empresa;
     }
 
+    public Empleado(){
+        this.nombre = new SimpleStringProperty("");
+        this.primer_apellido = new SimpleStringProperty("");
+        this.segundo_apellido = new SimpleStringProperty("");
+        this.nif = "";
+        this.numero_afiliacion = "";
+        this.cod_empresa = -1;
+    }
+
     public int getCod_empleado() {
         return cod_empleado;
     }

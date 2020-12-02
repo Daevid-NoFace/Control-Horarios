@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
@@ -58,13 +57,9 @@
                         <Label fx:id="empresaLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                      </children>
                   </GridPane>
-                  <ButtonBar layoutX="50.0" layoutY="294.0" prefHeight="40.0" prefWidth="337.0">
-                    <buttons>
-                        <JFXButton />
-                        <JFXButton />
-                        <JFXButton />
-                    </buttons>
-                  </ButtonBar>
+                  <JFXButton layoutX="14.0" layoutY="294.0" onAction="#insertarEmpleado" text="Insertar" />
+                  <JFXButton layoutX="104.0" layoutY="294.0" text="Editar" />
+                  <JFXButton layoutX="201.0" layoutY="294.0" text="Eliminar" />
                </children>
             </AnchorPane>
         </items>
