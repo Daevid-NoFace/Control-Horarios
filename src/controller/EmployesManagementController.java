@@ -3,12 +3,14 @@ package controller;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.validation.RequiredFieldValidator;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import model.Empleado;
@@ -62,6 +64,13 @@ public class EmployesManagementController implements Initializable {
     @FXML
     private TableColumn<Empleado, String> empresaCol;
 
+    @FXML
+    private TableColumn<Empleado, Integer> horasColum;
+
+    @FXML
+    private JFXTextField horasLaborables;
+
+
 
     private ObservableList<Empleado> employes;
     private ObservableList<String> empresas;
@@ -82,6 +91,62 @@ public class EmployesManagementController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        RequiredFieldValidator validator = new RequiredFieldValidator();
+        validator.setMessage("Debe rellenar el campo");
+
+        nombreTextField.getValidators().add(validator);
+        nombreTextField.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if(!newValue)
+                    nombreTextField.validate();
+            }
+        });
+        primApellidoTextField.getValidators().add(validator);
+        primApellidoTextField.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if(!newValue)
+                    primApellidoTextField.validate();
+            }
+        });
+        segApellidoTextfield.getValidators().add(validator);
+        segApellidoTextfield.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if(!newValue)
+                    segApellidoTextfield.validate();
+            }
+        });
+        nifTextfield.getValidators().add(validator);
+        nifTextfield.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if(!newValue)
+                    nifTextfield.validate();
+            }
+        });
+        numTextfield.getValidators().add(validator);
+        numTextfield.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if(!newValue)
+                    numTextfield.validate();
+            }
+        });
+        horasLaborables.getValidators().add(validator);
+        horasLaborables.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if(!newValue)
+                    horasLaborables.validate();
+            }
+        });
+        horasLaborables.setText("8");
+
+        horasLaborables.setTextFormatter(new TextFormatter<>(change ->
+                (change.getControlNewText().matches("^[4-8]*$")) ? change : null));
 
         codCol.setCellValueFactory(
                 new PropertyValueFactory<Empleado,Integer>("cod_empleado")
@@ -106,6 +171,12 @@ public class EmployesManagementController implements Initializable {
         empresaCol.setCellValueFactory(
                 new PropertyValueFactory<Empleado, String>("nombre_empresa")
         );
+
+        horasColum.setCellValueFactory(
+                new PropertyValueFactory<Empleado,Integer>("horas_laborables")
+        );
+
+
         btnInsert.setDisable(false);
         btnDelete.setDisable(true);
         btnUpdate.setDisable(true);
@@ -147,6 +218,7 @@ public class EmployesManagementController implements Initializable {
             numTextfield.setText(empleado.getNumero_afiliacion());
             //ObservableList<String> empresa = FXCollections.observableArrayList(empleado.getCod_empresa());
             comboEmpresa.getSelectionModel().select(empleado.getNombre_empresa());
+           horasLaborables.setText(String.valueOf(empleado.getHoras_laborables()));
         }
 
         else{
@@ -167,17 +239,20 @@ public class EmployesManagementController implements Initializable {
 
 
     void insertEmployee() {
-        Empleado empleado = new Empleado();
-        empleado.setNombre(nombreTextField.getText());
-        empleado.setPrimer_apellido(primApellidoTextField.getText());
-        empleado.setSegundo_apellido(segApellidoTextfield.getText());
-        empleado.setNif(nifTextfield.getText());
-        empleado.setNumero_afiliacion(numTextfield.getText());
-        int cod_empresa = ServicesLocator.getEmpresa().getEmpresaCodByName(comboEmpresa.getSelectionModel().getSelectedItem());
-        empleado.setCod_empresa(cod_empresa);
-        ServicesLocator.getEmpleado().insertarEmpleado(empleado);
-        resetValues();
-        populateTable();
+
+            Empleado empleado = new Empleado();
+            empleado.setNombre(nombreTextField.getText());
+            empleado.setPrimer_apellido(primApellidoTextField.getText());
+            empleado.setSegundo_apellido(segApellidoTextfield.getText());
+            empleado.setNif(nifTextfield.getText());
+            empleado.setNumero_afiliacion(numTextfield.getText());
+            int cod_empresa = ServicesLocator.getEmpresa().getEmpresaCodByName(comboEmpresa.getSelectionModel().getSelectedItem());
+            empleado.setCod_empresa(cod_empresa);
+            empleado.setHoras_laborables(Integer.parseInt(horasLaborables.getText()));
+            ServicesLocator.getEmpleado().insertarEmpleado(empleado);
+            resetValues();
+            populateTable();
+
     }
 
 
@@ -190,6 +265,7 @@ public class EmployesManagementController implements Initializable {
         empleado.setNumero_afiliacion(numTextfield.getText());
         int cod_empresa = ServicesLocator.getEmpresa().getEmpresaCodByName(comboEmpresa.getSelectionModel().getSelectedItem());
         empleado.setCod_empresa(cod_empresa);
+        empleado.setHoras_laborables(Integer.parseInt(horasLaborables.getText()));
         ServicesLocator.getEmpleado().updateEmpleado(empleado);
         resetValues();
         populateTable();
@@ -203,6 +279,7 @@ public class EmployesManagementController implements Initializable {
         nifTextfield.setText("");
         numTextfield.setText("");
         comboEmpresa.getSelectionModel().select(-1);
+        horasLaborables.setText("8");
     }
 
     @FXML
@@ -217,6 +294,7 @@ public class EmployesManagementController implements Initializable {
             nifTextfield.setText("");
             numTextfield.setText("");
             comboEmpresa.getSelectionModel().select(-1);
+            horasLaborables.setText("8");
         }
 
     }

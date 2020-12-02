@@ -13,24 +13,27 @@ public class Empleado {
     private SimpleStringProperty numero_afiliacion;
     private SimpleIntegerProperty cod_empresa;
     private SimpleStringProperty nombre_empresa;
+    private SimpleIntegerProperty horas_laborables;
 
-    public Empleado(String nombre, String primer_apellido, String segundo_apellido, String nif, String numero_afiliacion, int cod_empresa) {
+    public Empleado(String nombre, String primer_apellido, String segundo_apellido, String nif, String numero_afiliacion, int horas_laborables,int cod_empresa) {
         this.nombre = new SimpleStringProperty(nombre);
         this.primer_apellido = new SimpleStringProperty(primer_apellido);
         this.segundo_apellido = new SimpleStringProperty(segundo_apellido);
         this.nif = new SimpleStringProperty(nif);
         this.numero_afiliacion = new SimpleStringProperty(numero_afiliacion);
+        this.horas_laborables = new SimpleIntegerProperty(horas_laborables);
         this.cod_empresa = new SimpleIntegerProperty(cod_empresa);
         this.nombre_empresa = new SimpleStringProperty(ServicesLocator.getEmpresa().getEmpresaNombreByCod(cod_empresa));
     }
 
-    public Empleado(int cod_empleado, String nombre, String primer_apellido, String segundo_apellido, String nif, String numero_afiliacion, int cod_empresa) {
+    public Empleado(int cod_empleado, String nombre, String primer_apellido, String segundo_apellido, String nif, String numero_afiliacion, int horas_laborables,int cod_empresa) {
         this.cod_empleado = new SimpleIntegerProperty(cod_empleado);
         this.nombre = new SimpleStringProperty(nombre);
         this.primer_apellido = new SimpleStringProperty(primer_apellido);
         this.segundo_apellido = new SimpleStringProperty(segundo_apellido);
         this.nif = new SimpleStringProperty(nif);
         this.numero_afiliacion = new SimpleStringProperty(numero_afiliacion);
+        this.horas_laborables = new SimpleIntegerProperty(horas_laborables);
         this.cod_empresa = new SimpleIntegerProperty(cod_empresa);
         this.nombre_empresa = new SimpleStringProperty(ServicesLocator.getEmpresa().getEmpresaNombreByCod(cod_empresa));
     }
@@ -44,7 +47,11 @@ public class Empleado {
         this.numero_afiliacion = new SimpleStringProperty();
         this.cod_empresa = new SimpleIntegerProperty();
         this.nombre_empresa = new SimpleStringProperty();
+        this.horas_laborables = new SimpleIntegerProperty();
     }
+
+
+
 
     public int getCod_empleado() {
         return cod_empleado.get();
@@ -140,6 +147,18 @@ public class Empleado {
 
     public void setNombre_empresa(String nombre_empresa) {
         this.nombre_empresa.set(nombre_empresa);
+    }
+
+    public int getHoras_laborables() {
+        return horas_laborables.get();
+    }
+
+    public SimpleIntegerProperty horas_laborablesProperty() {
+        return horas_laborables;
+    }
+
+    public void setHoras_laborables(int horas_laborables) {
+        this.horas_laborables.set(horas_laborables);
     }
 
     public String toStringCode() {

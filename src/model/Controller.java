@@ -379,8 +379,8 @@ public class Controller {
                             cell = sheet.getRow(48).getCell(6);
                             if (cell != null) {
                                 //-2 para qiue coincida el numero de la lista con el numero de la hoja
-                                cell.setCellFormula("'" + book.getSheetAt(0).getSheetName() + "'" + "" +
-                                        cell_formulas.get(total_sheets - 2));
+                                cell.setCellFormula("('" + book.getSheetAt(0).getSheetName() + "'" + "" +
+                                        cell_formulas.get(total_sheets - 2)+"*"+listaEmpleados.get(j).getHoras_laborables()+")/8");
                                 System.out.println(cell.getCellFormula());
                             }
 
