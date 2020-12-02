@@ -34,6 +34,27 @@ public class EmpresaServices {
         return lista;
     }
 
+    public String empresaById(int id) {
+        String nombreEmpresa = "";
+
+        try {
+            Connection connection = ServicesLocator.getConnection();
+            String consulta = "Select empresa.nombre_empresa from empresa where empresa.cod_empresa = " + id;
+            PreparedStatement prepare = connection.prepareStatement(consulta);//para consultas
+            prepare.execute();
+            ResultSet result = prepare.getResultSet();//para quedarme con lo q devuelve la consulta
+            while (result.next()){ //para varias filas
+                nombreEmpresa = result.getString(1);
+            }
+
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return nombreEmpresa;
+    }
+
 
     public void readPicture(int materialId, String filename) {
         // update sql

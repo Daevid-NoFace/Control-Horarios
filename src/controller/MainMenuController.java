@@ -50,6 +50,9 @@ public class MainMenuController implements Initializable {
     private JFXButton fileMenu;
 
     @FXML
+    private JFXButton editMenu;
+
+    @FXML
     private Label resultLabel;
 
     @FXML
@@ -68,8 +71,16 @@ public class MainMenuController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         fileMenu.requestFocus();
+        editMenu.requestFocus();
+
+        //Archivo
         AnchorPane popupPane = new AnchorPane();
         VBox vBox = new VBox();
+
+        //Edicion
+        AnchorPane popupEditionPane = new AnchorPane();
+        VBox vBoxEdition = new VBox();
+
         JFXListView<JFXButton> list = new JFXListView<JFXButton>();
 
         JFXButton btnLoadCalendar = new JFXButton("Cargar Calendario");
@@ -91,14 +102,14 @@ public class MainMenuController implements Initializable {
         close.setGraphic(view2);
         close.setCursor(Cursor.HAND);
 
-
-
+        //poner los botones en el popup
         vBox.getChildren().add(btnLoadCalendar);
         vBox.getChildren().add(btnHorary);
         vBox.getChildren().add(close);
         popupPane.getChildren().add(vBox);
         JFXPopup popup = new JFXPopup(popupPane);
 
+        //acciones de los botones
         fileMenu.setOnAction(event -> {
             popup.show(fileMenu, JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.LEFT,fileMenu.getLayoutX(),fileMenu.getLayoutY()+50);
         });
@@ -116,6 +127,31 @@ public class MainMenuController implements Initializable {
             closeApplication(event);
             popup.hide();
         });
+
+        //creacion de los menus de edicion
+        JFXButton btnEditWorker = new JFXButton("Empleados");
+        ImageView view3 = new ImageView(new Image("/resources/address_book_32.png"));
+        view.setFitWidth(25);
+        view.setFitHeight(25);
+        btnEditWorker.setGraphic(view3);
+        btnEditWorker.setCursor(Cursor.HAND);
+
+        //poner los botones en el popup
+        vBoxEdition.getChildren().addAll(btnEditWorker);
+        popupEditionPane.getChildren().add(vBoxEdition);
+        JFXPopup popupEdition = new JFXPopup(popupEditionPane);
+
+        //acciones de los botones
+        editMenu.setOnAction(event -> {
+            popupEdition.show(editMenu, JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.LEFT, editMenu.getLayoutX() - 100, editMenu.getLayoutY() + 50);
+        });
+        btnEditWorker.setOnAction(event -> {
+            mostrarPanelEmpleados(event);
+            popupEdition.hide();
+        });
+
+
+
         notification = new TrayNotification();
         listFiles = new ArrayList<>();
         getSLides();
@@ -353,6 +389,31 @@ public class MainMenuController implements Initializable {
 
     public ArrayList<FileInputStream> getFiles(){
         return this.listFiles;
+    }
+
+    public void mostrarPanelEmpleados(ActionEvent event) {
+        try {
+            System.out.println("Panel de edicion de empleados" + "\n" + "-------------------------");
+
+            FXMLLoader loader =new FXMLLoader();
+            loader.setLocation(MainMenuController.class.getResource("../view/EdicionEmpleado.fxml"));
+            AnchorPane page = (AnchorPane) loader.load();
+
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Gestionar Empleados");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.setAlwaysOnTop(true);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            //setController
+            EdicionEmpleadoController controller =loader.getController();
+            controller.setMainMenuController(this);
+
+            dialogStage.showAndWait();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     //CREATION OF FRAMES

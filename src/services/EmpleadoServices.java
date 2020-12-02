@@ -1,6 +1,7 @@
 package services;
 
 import model.Empleado;
+import model.Empresa;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
