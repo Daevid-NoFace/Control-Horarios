@@ -13,8 +13,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
+import javafx.util.Duration;
 import model.Empleado;
 import services.ServicesLocator;
+import tray.animations.AnimationType;
+import tray.notification.NotificationType;
+import tray.notification.TrayNotification;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -22,6 +26,7 @@ import java.util.ResourceBundle;
 public class EmployesManagementController implements Initializable {
 
     private MainMenuController mainMenuController;
+    private TrayNotification notification;
 
 
     @FXML
@@ -185,6 +190,7 @@ public class EmployesManagementController implements Initializable {
         btnUpdate.setOnAction(event -> updateEmployee());
         btnDelete.setOnAction(event -> deleteEmployee());
 
+        notification = new TrayNotification();
     }
 
 
@@ -225,13 +231,20 @@ public class EmployesManagementController implements Initializable {
         Empleado empleado = employesTable.getSelectionModel().getSelectedItem();
         ServicesLocator.getEmpleado().deleteEmpleado(empleado);
         resetValues();
-
         populateTable();
+
+        notification.setMessage("Empleando eliminado del sistema con éxito");
+        notification.setTitle("Empleado eliminado");
+        notification.setNotificationType(NotificationType.SUCCESS);
+        notification.showAndDismiss(Duration.millis(5000));
+        notification.setAnimationType(AnimationType.POPUP);
     }
 
 
     void insertEmployee() {
 
+        if (!nombreTextField.getValidators().get(0).getHasErrors() && !primApellidoTextField.getValidators().get(0).getHasErrors() && !nifTextfield.getValidators().get(0).getHasErrors()
+                && !numTextfield.getValidators().get(0).getHasErrors() && !horasLaborables.getValidators().get(0).getHasErrors()) {
             Empleado empleado = new Empleado();
             empleado.setNombre(nombreTextField.getText());
             empleado.setPrimer_apellido(primApellidoTextField.getText());
@@ -245,22 +258,51 @@ public class EmployesManagementController implements Initializable {
             resetValues();
             populateTable();
 
+            notification.setMessage("Empleando insertado al sistema con éxito");
+            notification.setTitle("Empleado insertado");
+            notification.setNotificationType(NotificationType.SUCCESS);
+            notification.showAndDismiss(Duration.millis(5000));
+            notification.setAnimationType(AnimationType.POPUP);
+        } else {
+            notification.setMessage("Fallo al entrar los datos. Campos nulos o vacíos");
+            notification.setTitle("Inserte de nuevo los datos");
+            notification.setNotificationType(NotificationType.ERROR);
+            notification.showAndDismiss(Duration.millis(5000));
+            notification.setAnimationType(AnimationType.POPUP);
+        }
     }
 
 
     void updateEmployee() {
-        Empleado empleado = employesTable.getSelectionModel().getSelectedItem();
-        empleado.setNombre(nombreTextField.getText());
-        empleado.setPrimer_apellido(primApellidoTextField.getText());
-        empleado.setSegundo_apellido(segApellidoTextfield.getText());
-        empleado.setNif(nifTextfield.getText());
-        empleado.setNumero_afiliacion(numTextfield.getText());
-        int cod_empresa = ServicesLocator.getEmpresa().getEmpresaCodByName(comboEmpresa.getSelectionModel().getSelectedItem());
-        empleado.setCod_empresa(cod_empresa);
-        empleado.setHoras_laborables(Integer.parseInt(horasLaborables.getText()));
-        ServicesLocator.getEmpleado().updateEmpleado(empleado);
-        resetValues();
-        populateTable();
+
+        if (!nombreTextField.getValidators().get(0).getHasErrors() && !primApellidoTextField.getValidators().get(0).getHasErrors() && !nifTextfield.getValidators().get(0).getHasErrors()
+                && !numTextfield.getValidators().get(0).getHasErrors() && !horasLaborables.getValidators().get(0).getHasErrors()) {
+            Empleado empleado = employesTable.getSelectionModel().getSelectedItem();
+            empleado.setNombre(nombreTextField.getText());
+            empleado.setPrimer_apellido(primApellidoTextField.getText());
+            empleado.setSegundo_apellido(segApellidoTextfield.getText());
+            empleado.setNif(nifTextfield.getText());
+            empleado.setNumero_afiliacion(numTextfield.getText());
+            int cod_empresa = ServicesLocator.getEmpresa().getEmpresaCodByName(comboEmpresa.getSelectionModel().getSelectedItem());
+            empleado.setCod_empresa(cod_empresa);
+            empleado.setHoras_laborables(Integer.parseInt(horasLaborables.getText()));
+            ServicesLocator.getEmpleado().updateEmpleado(empleado);
+            resetValues();
+            populateTable();
+
+            notification.setMessage("Cambios realizados con éxito");
+            notification.setTitle("Información de empleado editada");
+            notification.setNotificationType(NotificationType.SUCCESS);
+            notification.showAndDismiss(Duration.millis(5000));
+            notification.setAnimationType(AnimationType.POPUP);
+        } else {
+            notification.setMessage("Fallo al entrar los datos. Campos nulos o vacíos");
+            notification.setTitle("Inserte de nuevo los datos");
+            notification.setNotificationType(NotificationType.ERROR);
+            notification.showAndDismiss(Duration.millis(5000));
+            notification.setAnimationType(AnimationType.POPUP);
+        }
+
     }
 
 
