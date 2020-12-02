@@ -1,15 +1,23 @@
 package controller;
 
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import model.Empleado;
 import services.ServicesLocator;
 
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -57,7 +65,6 @@ public class EdicionEmpleadoController implements Initializable {
         showPersonDetails(null);
 
         tablaEmpleados.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> showPersonDetails(newValue));
-
     }
 
     private void showPersonDetails(Empleado empleado) {
@@ -75,6 +82,35 @@ public class EdicionEmpleadoController implements Initializable {
             NIFLabel.setText("");
             NoAfiliacionLabel.setText("");
             empresaLabel.setText("");
+        }
+    }
+
+    public void insertarEmpleado(ActionEvent event) {
+        try {
+            Empleado empleado = new Empleado();
+
+            // Load the fxml file and create a new stage for the popup dialog.
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainMenuController.class.getResource("../view/VentanaEdicion.fxml"));
+            AnchorPane page = (AnchorPane) loader.load();
+
+            // Create the dialog Stage.
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Edit Person");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            //dialogStage.initOwner(primaryStage);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            // Set the person into the controller.
+            VentanaEdicionController controller = loader.getController();
+            controller.setEmpleado(empleado);
+
+            // Show the dialog and wait until the user closes it
+            dialogStage.setAlwaysOnTop(true);
+            dialogStage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
