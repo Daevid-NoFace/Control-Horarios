@@ -16,6 +16,12 @@ import java.util.ResourceBundle;
 
 public class EmployesManagementController implements Initializable {
 
+    private MainMenuController mainMenuController;
+
+
+
+
+
     @FXML
     private TableView<EmpleadoTableModel> employesTable;
 
@@ -87,5 +93,9 @@ public class EmployesManagementController implements Initializable {
         employes = FXCollections.observableArrayList(ServicesLocator.getEmpleado().listadoEmpleadosModelo());
         employesTable.setItems(employes);
 
+    }
+
+    public void setMainMenuController(MainMenuController mainMenuController) {
+        this.mainMenuController = mainMenuController;
     }
 }

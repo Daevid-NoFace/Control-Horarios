@@ -20,6 +20,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import model.Controller;
 
@@ -343,7 +344,29 @@ public class MainMenuController implements Initializable {
 
     @FXML
     void showEmployesData(ActionEvent event) {
+        try {
+            System.out.println("Panel de edicion de empleados" + "\n" + "-------------------------");
 
+            FXMLLoader loader =new FXMLLoader();
+            loader.setLocation(MainMenuController.class.getResource("../view/EmployesManagement.fxml"));
+            AnchorPane page = (AnchorPane) loader.load();
+
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Gestionar Empleados");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initStyle(StageStyle.UNDECORATED);
+            dialogStage.setAlwaysOnTop(true);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            //setController
+            EmployesManagementController controller =loader.getController();
+            controller.setMainMenuController(this);
+
+            dialogStage.showAndWait();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public AnchorPane getRoot() {
