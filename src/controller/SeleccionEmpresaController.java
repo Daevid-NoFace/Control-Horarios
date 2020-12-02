@@ -57,7 +57,7 @@ public class SeleccionEmpresaController implements Initializable {
                 System.out.println("ERROR");
             }
 
-                Controller.mergeExcelFiles(lista, listaEmpresas.get(empresaComboBox.getSelectionModel().getSelectedIndex()), inputStream1);
+                //Controller.mergeExcelFiles(lista, listaEmpresas.get(empresaComboBox.getSelectionModel().getSelectedIndex()), inputStream1);
 
 
         /*for (int i = 0; i < lista.size(); i++) {

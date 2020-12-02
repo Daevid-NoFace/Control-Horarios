@@ -1,7 +1,6 @@
 package services;
 
 import model.Empleado;
-import model.EmpleadoTableModel;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -59,8 +58,8 @@ public class EmpleadoServices {
     }
 
 
-    public ArrayList<EmpleadoTableModel> listadoEmpleadosModelo(){
-        ArrayList<EmpleadoTableModel> list = new ArrayList<>();
+    public ArrayList<Empleado> listadoEmpleadosModelo(){
+        ArrayList<Empleado> list = new ArrayList<>();
 
         try {
             Connection connection = ServicesLocator.getConnection();
@@ -69,10 +68,9 @@ public class EmpleadoServices {
             prepare.execute();
             ResultSet result = prepare.getResultSet();//para quedarme con lo q devuelve la consulta
             while (result.next()){ //para varias filas
-                String nombre_empresa = ServicesLocator.getEmpresa().getEmpresaNombreByCod(result.getInt(7));
-                EmpleadoTableModel a = new EmpleadoTableModel(result.getInt(1), result.getString(2),
+                Empleado a = new Empleado(result.getInt(1), result.getString(2),
                         result.getString(3),result.getString(4),result.getString(5),
-                        result.getString(6),nombre_empresa);
+                        result.getString(6),result.getInt(7));
                 list.add(a);
             }
 

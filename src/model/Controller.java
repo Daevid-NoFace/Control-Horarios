@@ -192,8 +192,10 @@ public class Controller {
         }
     }
 
-    protected static void writeFile(XSSFWorkbook book, File file) throws Exception {
-        FileOutputStream out = new FileOutputStream(file, true);
+    protected static void writeFile(XSSFWorkbook book, File file,String ruta) throws Exception {
+
+        FileOutputStream out = new FileOutputStream(file.getAbsolutePath(), true);
+
         book.write(out);
         book.close();
         //out.flush();
@@ -289,12 +291,15 @@ public class Controller {
 
     }
 
-   public static void mergeExcelFiles(ArrayList<Empleado> listaEmpleados, Empresa empresa, File calendar) throws IOException {
+   public static void mergeExcelFiles(ArrayList<Empleado> listaEmpleados, Empresa empresa, File calendar, String ruta) throws IOException {
         ArrayList<String> cell_formulas = generateCellToFormula();
 
 
         File file = null;
-
+        File dir = new File(ruta+"/"+empresa.getNombre());
+        if(!dir.exists()){
+            dir.mkdir();
+        }
         for (int j = 0; j < listaEmpleados.size(); j++) {
             ArrayList<FileInputStream> list = new ArrayList<>();
             FileInputStream inputStream1 = new FileInputStream(calendar);
@@ -303,7 +308,7 @@ public class Controller {
             list.add(inputStream2);
             XSSFWorkbook book = new XSSFWorkbook();
             XSSFSheet sheet = null;
-            file = new File(listaEmpleados.get(j).getNombre() + ".xlsx");
+            file = new File(dir.getAbsolutePath()+"/"+listaEmpleados.get(j).getNombre() + ".xlsx");
 
             //FileInputStream obtains input bytes from the image file
 
@@ -389,7 +394,7 @@ public class Controller {
                 }
                 setDataWorkerInHoraryModel(book, empresa, listaEmpleados.get(j));
                 passWeekendToSheets(book);
-                writeFile(book, file);
+                writeFile(book, file, ruta);
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

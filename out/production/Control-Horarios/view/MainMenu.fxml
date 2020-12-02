@@ -12,9 +12,9 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="431.0" prefWidth="794.0" style="-fx-background-color: white;" stylesheets="@../styles/Style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainMenuController">
     <children>
-        <Label layoutX="104.0" layoutY="30.0" prefHeight="90.0" prefWidth="645.0" text="Control de Horarios Palobiofarma">
+        <Label layoutX="74.0" layoutY="34.0" prefHeight="90.0" prefWidth="645.0" text="Control de Horarios Palobiofarma S.L &amp; Medibiofarma">
             <font>
-                <Font name="Microsoft JhengHei" size="39.0" />
+                <Font name="Microsoft JhengHei" size="24.0" />
             </font></Label>
         <Label fx:id="resultLabel" layoutX="342.0" layoutY="402.0" text="Label" />
         <JFXProgressBar fx:id="progressBar" layoutX="287.0" layoutY="372.0" prefHeight="14.0" prefWidth="222.0" progress="0.0" />
@@ -47,7 +47,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </JFXButton>
-                  <JFXButton prefHeight="47.0" prefWidth="106.0" styleClass="menu-item3" stylesheets="@../styles/Style.css" text="About" GridPane.columnIndex="2">
+                  <JFXButton fx:id="aboutBtn" prefHeight="47.0" prefWidth="106.0" styleClass="menu-item3" stylesheets="@../styles/Style.css" text="About" GridPane.columnIndex="2">
                      <font>
                         <Font name="Microsoft JhengHei" size="18.0" />
                      </font>

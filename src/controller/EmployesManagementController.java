@@ -1,6 +1,8 @@
 package controller;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -8,7 +10,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import model.EmpleadoTableModel;
+import javafx.scene.input.KeyEvent;
+import model.Empleado;
 import services.ServicesLocator;
 
 import java.net.URL;
@@ -19,72 +22,105 @@ public class EmployesManagementController implements Initializable {
     private MainMenuController mainMenuController;
 
 
+    @FXML
+    private JFXTextField nombreTextField;
 
+    @FXML
+    private JFXTextField primApellidoTextField;
+
+    @FXML
+    private JFXTextField segApellidoTextfield;
+
+    @FXML
+    private JFXTextField nifTextfield;
+
+    @FXML
+    private JFXTextField numTextfield;
 
 
     @FXML
-    private TableView<EmpleadoTableModel> employesTable;
+    private TableView<Empleado> employesTable;
 
     @FXML
-    private TableColumn<EmpleadoTableModel, Integer> codCol;
+    private TableColumn<Empleado, Integer> codCol;
 
     @FXML
-    private TableColumn<EmpleadoTableModel, String> nombreCol;
+    private TableColumn<Empleado, String> nombreCol;
 
     @FXML
-    private TableColumn<EmpleadoTableModel, String> primerApCol;
+    private TableColumn<Empleado, String> primerApCol;
 
     @FXML
-    private TableColumn<EmpleadoTableModel, String> segundoApCol;
+    private TableColumn<Empleado, String> segundoApCol;
 
     @FXML
-    private TableColumn<EmpleadoTableModel, String> nifCol;
+    private TableColumn<Empleado, String> nifCol;
 
     @FXML
-    private TableColumn<EmpleadoTableModel, String> numCol;
+    private TableColumn<Empleado, String> numCol;
 
     @FXML
-    private TableColumn<EmpleadoTableModel, String> empresaCol;
+    private TableColumn<Empleado, String> empresaCol;
 
 
-    private ObservableList<EmpleadoTableModel> employes;
+    private ObservableList<Empleado> employes;
     private ObservableList<String> empresas;
 
     @FXML
     private JFXComboBox<String> comboEmpresa;
 
+    @FXML
+    private JFXButton btnInsert;
+
+    @FXML
+    private JFXButton btnUpdate;
+
+    @FXML
+    private JFXButton btnDelete;
+
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
         codCol.setCellValueFactory(
-                new PropertyValueFactory<EmpleadoTableModel,Integer>("cod_empleado")
+                new PropertyValueFactory<Empleado,Integer>("cod_empleado")
         );
 
         nombreCol.setCellValueFactory(
-                new PropertyValueFactory<EmpleadoTableModel, String>("nombre_empleado")
+                new PropertyValueFactory<Empleado, String>("nombre")
         );
 
         primerApCol.setCellValueFactory(
-                new PropertyValueFactory<EmpleadoTableModel, String>("primer_apellido")
+                new PropertyValueFactory<Empleado, String>("primer_apellido")
         );
         segundoApCol.setCellValueFactory(
-                new PropertyValueFactory<EmpleadoTableModel, String>("segundo_apellido")
+                new PropertyValueFactory<Empleado, String>("segundo_apellido")
         );
         nifCol.setCellValueFactory(
-                new PropertyValueFactory<EmpleadoTableModel, String>("nif")
+                new PropertyValueFactory<Empleado, String>("nif")
         );
         numCol.setCellValueFactory(
-                new PropertyValueFactory<EmpleadoTableModel, String>("numero_afiliacion")
+                new PropertyValueFactory<Empleado, String>("numero_afiliacion")
         );
         empresaCol.setCellValueFactory(
-                new PropertyValueFactory<EmpleadoTableModel, String>("cod_empresa")
+                new PropertyValueFactory<Empleado, String>("nombre_empresa")
         );
+        btnInsert.setDisable(false);
+        btnDelete.setDisable(true);
+        btnUpdate.setDisable(true);
 
 
         empresas = FXCollections.observableArrayList(ServicesLocator.getEmpresa().nombreEmpresas());
         comboEmpresa.setItems(empresas);
 
         populateTable();
+
+        employesTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> showEmployeeDetails(newValue));
+
+        btnInsert.setOnAction(event -> insertEmployee());
+        btnUpdate.setOnAction(event -> updateEmployee());
+        btnDelete.setOnAction(event -> deleteEmployee());
 
     }
 
@@ -97,5 +133,91 @@ public class EmployesManagementController implements Initializable {
 
     public void setMainMenuController(MainMenuController mainMenuController) {
         this.mainMenuController = mainMenuController;
+    }
+
+    public void showEmployeeDetails(Empleado empleado){
+        btnInsert.setDisable(true);
+        btnDelete.setDisable(false);
+        btnUpdate.setDisable(false);
+        if(empleado !=null){
+            nombreTextField.setText(empleado.getNombre());
+            primApellidoTextField.setText(empleado.getPrimer_apellido());
+            segApellidoTextfield.setText(empleado.getSegundo_apellido());
+            nifTextfield.setText(empleado.getNif());
+            numTextfield.setText(empleado.getNumero_afiliacion());
+            //ObservableList<String> empresa = FXCollections.observableArrayList(empleado.getCod_empresa());
+            comboEmpresa.getSelectionModel().select(empleado.getNombre_empresa());
+        }
+
+        else{
+            btnInsert.setDisable(false);
+            btnDelete.setDisable(true);
+            btnUpdate.setDisable(true);
+        }
+    }
+
+
+    void deleteEmployee() {
+        Empleado empleado = employesTable.getSelectionModel().getSelectedItem();
+        ServicesLocator.getEmpleado().deleteEmpleado(empleado);
+        resetValues();
+
+        populateTable();
+    }
+
+
+    void insertEmployee() {
+        Empleado empleado = new Empleado();
+        empleado.setNombre(nombreTextField.getText());
+        empleado.setPrimer_apellido(primApellidoTextField.getText());
+        empleado.setSegundo_apellido(segApellidoTextfield.getText());
+        empleado.setNif(nifTextfield.getText());
+        empleado.setNumero_afiliacion(numTextfield.getText());
+        int cod_empresa = ServicesLocator.getEmpresa().getEmpresaCodByName(comboEmpresa.getSelectionModel().getSelectedItem());
+        empleado.setCod_empresa(cod_empresa);
+        ServicesLocator.getEmpleado().insertarEmpleado(empleado);
+        resetValues();
+        populateTable();
+    }
+
+
+    void updateEmployee() {
+        Empleado empleado = employesTable.getSelectionModel().getSelectedItem();
+        empleado.setNombre(nombreTextField.getText());
+        empleado.setPrimer_apellido(primApellidoTextField.getText());
+        empleado.setSegundo_apellido(segApellidoTextfield.getText());
+        empleado.setNif(nifTextfield.getText());
+        empleado.setNumero_afiliacion(numTextfield.getText());
+        int cod_empresa = ServicesLocator.getEmpresa().getEmpresaCodByName(comboEmpresa.getSelectionModel().getSelectedItem());
+        empleado.setCod_empresa(cod_empresa);
+        ServicesLocator.getEmpleado().updateEmpleado(empleado);
+        resetValues();
+        populateTable();
+    }
+
+
+    private void resetValues(){
+        nombreTextField.setText("");
+        primApellidoTextField.setText("");
+        segApellidoTextfield.setText("");
+        nifTextfield.setText("");
+        numTextfield.setText("");
+        comboEmpresa.getSelectionModel().select(-1);
+    }
+
+    @FXML
+    void resetAllValues(KeyEvent event) {
+        if(event.getCode().getName().equalsIgnoreCase("Esc")){
+            btnInsert.setDisable(false);
+            btnDelete.setDisable(true);
+            btnUpdate.setDisable(true);
+            nombreTextField.setText("");
+            primApellidoTextField.setText("");
+            segApellidoTextfield.setText("");
+            nifTextfield.setText("");
+            numTextfield.setText("");
+            comboEmpresa.getSelectionModel().select(-1);
+        }
+
     }
 }
