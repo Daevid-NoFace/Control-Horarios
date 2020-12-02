@@ -250,7 +250,13 @@ public class Controller {
                                 workbook.getSheetAt(date.getMonth() + 1).getRow(10).getCell(5).setCellValue(date);
                             } else if ((date.getMonth() == 3 || date.getMonth() == 5 || date.getMonth() == 8 || date.getMonth() == 10) && date.getDate() == 30) {
                                 workbook.getSheetAt(date.getMonth() + 1).getRow(10).getCell(5).setCellValue(date);
-                            } //falta febrero
+                            } if (date.getMonth() == 1) {
+                                if (date.getYear() % 4 == 0 && date.getDate() == 29) {
+                                    workbook.getSheetAt(date.getMonth() + 1).getRow(10).getCell(5).setCellValue(date);
+                                } else if (date.getYear() % 4 != 0 && date.getDate() == 28) {
+                                    workbook.getSheetAt(date.getMonth() + 1).getRow(10).getCell(5).setCellValue(date);
+                                }
+                            }
                         }
                     }
                 }

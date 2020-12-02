@@ -115,8 +115,6 @@ public class MainMenuController implements Initializable {
         progressBar.setProgress(0);
     }
 
-
-
     private void createSlideShow(){
 
         /*images = new ArrayList<>();
@@ -161,7 +159,6 @@ public class MainMenuController implements Initializable {
 
 
     }
-
 
     public FadeTransition getFadeTransition(ImageView imageView, double fromValue, double toValue, int durationInMilliseconds) {
 
