@@ -111,14 +111,6 @@ public class EmployesManagementController implements Initializable {
                     primApellidoTextField.validate();
             }
         });
-        segApellidoTextfield.getValidators().add(validator);
-        segApellidoTextfield.focusedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if(!newValue)
-                    segApellidoTextfield.validate();
-            }
-        });
         nifTextfield.getValidators().add(validator);
         nifTextfield.focusedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
