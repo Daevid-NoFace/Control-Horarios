@@ -275,6 +275,7 @@ public class MainMenuController implements Initializable {
 
         if (file == null) {
 
+
             notification.setMessage("Falló la importación del calendario");
             notification.setTitle("Importación de calendario");
             notification.setNotificationType(NotificationType.ERROR);
@@ -283,13 +284,15 @@ public class MainMenuController implements Initializable {
         }
         else{
             listFiles.add(file);
+
+
             notification.setMessage("Se ha importado el calendario");
             notification.setTitle("Importacion de calendario");
             notification.setNotificationType(NotificationType.SUCCESS);
             notification.showAndDismiss(Duration.millis(5000));
             notification.setAnimationType(AnimationType.POPUP);
         }
-        System.out.println(file.getAbsolutePath());
+
 
     }
 
@@ -301,8 +304,16 @@ public class MainMenuController implements Initializable {
             ArrayList<Empleado> lista = ServicesLocator.getEmpleado().listadoEmpleadosXEmpresa(empresa.getNombre());
             System.out.println(lista.size());
 
-            File file = new File("Horary Model.xlsx");
-            System.out.println(file.getAbsolutePath());
+            String [] nombre = this.file.getName().split(" ");
+            int year = Integer.parseInt(nombre[0]);
+            File file = null;
+            if(year%4 !=0 ){
+                file = new File("Horary Model Regular.xlsx");
+            }else{
+                file = new File("Horary Model Bisiesto.xlsx");
+            }
+
+            //System.out.println(file.getAbsolutePath());
             //InputStream inputStream2 = getClass().getResourceAsStream("Horary Model.xlsx");
 
             //listFiles.add(inputStream1);

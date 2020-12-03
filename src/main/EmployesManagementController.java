@@ -74,7 +74,6 @@ public class EmployesManagementController implements Initializable {
     private JFXTextField horasLaborables;
 
 
-
     private ObservableList<Empleado> employes;
     private ObservableList<String> empresas;
 
@@ -91,60 +90,17 @@ public class EmployesManagementController implements Initializable {
     private JFXButton btnDelete;
 
 
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        RequiredFieldValidator validator = new RequiredFieldValidator();
-        validator.setMessage("Debe rellenar el campo");
 
-        nombreTextField.getValidators().add(validator);
-        nombreTextField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if(!newValue)
-                    nombreTextField.validate();
-            }
-        });
-        primApellidoTextField.getValidators().add(validator);
-        primApellidoTextField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if(!newValue)
-                    primApellidoTextField.validate();
-            }
-        });
-        nifTextfield.getValidators().add(validator);
-        nifTextfield.focusedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if(!newValue)
-                    nifTextfield.validate();
-            }
-        });
-        numTextfield.getValidators().add(validator);
-        numTextfield.focusedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if(!newValue)
-                    numTextfield.validate();
-            }
-        });
-        horasLaborables.getValidators().add(validator);
-        horasLaborables.focusedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if(!newValue)
-                    horasLaborables.validate();
-            }
-        });
         horasLaborables.setText("8");
 
         horasLaborables.setTextFormatter(new TextFormatter<>(change ->
                 (change.getControlNewText().matches("^[4-8]*$")) ? change : null));
 
         codCol.setCellValueFactory(
-                new PropertyValueFactory<Empleado,Integer>("cod_empleado")
+                new PropertyValueFactory<Empleado, Integer>("cod_empleado")
         );
 
         nombreCol.setCellValueFactory(
@@ -168,7 +124,7 @@ public class EmployesManagementController implements Initializable {
         );
 
         horasColum.setCellValueFactory(
-                new PropertyValueFactory<Empleado,Integer>("horas_laborables")
+                new PropertyValueFactory<Empleado, Integer>("horas_laborables")
         );
 
 
@@ -192,7 +148,7 @@ public class EmployesManagementController implements Initializable {
     }
 
 
-    private void populateTable(){
+    private void populateTable() {
         employes = FXCollections.observableArrayList(ServicesLocator.getEmpleado().listadoEmpleadosModelo());
         employesTable.setItems(employes);
 
@@ -202,11 +158,11 @@ public class EmployesManagementController implements Initializable {
         this.mainMenuController = mainMenuController;
     }
 
-    public void showEmployeeDetails(Empleado empleado){
+    public void showEmployeeDetails(Empleado empleado) {
         btnInsert.setDisable(true);
         btnDelete.setDisable(false);
         btnUpdate.setDisable(false);
-        if(empleado !=null){
+        if (empleado != null) {
             nombreTextField.setText(empleado.getNombre());
             primApellidoTextField.setText(empleado.getPrimer_apellido());
             segApellidoTextfield.setText(empleado.getSegundo_apellido());
@@ -214,10 +170,8 @@ public class EmployesManagementController implements Initializable {
             numTextfield.setText(empleado.getNumero_afiliacion());
             //ObservableList<String> empresa = FXCollections.observableArrayList(empleado.getCod_empresa());
             comboEmpresa.getSelectionModel().select(empleado.getNombre_empresa());
-           horasLaborables.setText(String.valueOf(empleado.getHoras_laborables()));
-        }
-
-        else{
+            horasLaborables.setText(String.valueOf(empleado.getHoras_laborables()));
+        } else {
             btnInsert.setDisable(false);
             btnDelete.setDisable(true);
             btnUpdate.setDisable(true);
@@ -241,8 +195,17 @@ public class EmployesManagementController implements Initializable {
 
     void insertEmployee() {
 
-        if (!nombreTextField.getValidators().get(0).getHasErrors() && !primApellidoTextField.getValidators().get(0).getHasErrors() && !nifTextfield.getValidators().get(0).getHasErrors()
-                && !numTextfield.getValidators().get(0).getHasErrors() && !horasLaborables.getValidators().get(0).getHasErrors()) {
+        if (nombreTextField.getText().equalsIgnoreCase("") || nombreTextField.getText().trim().equalsIgnoreCase("")
+                || primApellidoTextField.getText().equalsIgnoreCase("") || primApellidoTextField.getText().trim().equalsIgnoreCase("")
+                || nifTextfield.getText().equalsIgnoreCase("") || nifTextfield.getText().trim().equalsIgnoreCase("")
+                || numTextfield.getText().equalsIgnoreCase("") || numTextfield.getText().trim().equalsIgnoreCase("")
+                || horasLaborables.getText().equalsIgnoreCase("") || horasLaborables.getText().trim().equalsIgnoreCase("")
+                || comboEmpresa.getSelectionModel().getSelectedIndex() == -1) {
+
+            notification.setMessage("Debe rellenar todos los campos");
+            notification.setTitle("Campos vacíos");
+            notification.setNotificationType(NotificationType.ERROR);
+        } else {
             Empleado empleado = new Empleado();
             empleado.setNombre(nombreTextField.getText());
             empleado.setPrimer_apellido(primApellidoTextField.getText());
@@ -259,22 +222,28 @@ public class EmployesManagementController implements Initializable {
             notification.setMessage("Empleando insertado al sistema con éxito");
             notification.setTitle("Empleado insertado");
             notification.setNotificationType(NotificationType.SUCCESS);
-            notification.showAndDismiss(Duration.millis(5000));
-            notification.setAnimationType(AnimationType.POPUP);
-        } else {
-            notification.setMessage("Fallo al entrar los datos. Campos nulos o vacíos");
-            notification.setTitle("Inserte de nuevo los datos");
-            notification.setNotificationType(NotificationType.ERROR);
-            notification.showAndDismiss(Duration.millis(5000));
-            notification.setAnimationType(AnimationType.POPUP);
         }
+        notification.showAndDismiss(Duration.millis(5000));
+        notification.setAnimationType(AnimationType.POPUP);
+
     }
 
 
     void updateEmployee() {
 
-        if (!nombreTextField.getValidators().get(0).getHasErrors() && !primApellidoTextField.getValidators().get(0).getHasErrors() && !nifTextfield.getValidators().get(0).getHasErrors()
-                && !numTextfield.getValidators().get(0).getHasErrors() && !horasLaborables.getValidators().get(0).getHasErrors()) {
+        if (nombreTextField.getText().equalsIgnoreCase("") || nombreTextField.getText().trim().equalsIgnoreCase("")
+                || primApellidoTextField.getText().equalsIgnoreCase("") || primApellidoTextField.getText().trim().equalsIgnoreCase("")
+                || nifTextfield.getText().equalsIgnoreCase("") || nifTextfield.getText().trim().equalsIgnoreCase("")
+                || numTextfield.getText().equalsIgnoreCase("") || numTextfield.getText().trim().equalsIgnoreCase("")
+                || horasLaborables.getText().equalsIgnoreCase("") || horasLaborables.getText().trim().equalsIgnoreCase("")
+                || comboEmpresa.getSelectionModel().getSelectedIndex() == -1) {
+
+            notification.setMessage("Debe rellenar todos los campos");
+            notification.setTitle("Campos vacíos");
+            notification.setNotificationType(NotificationType.ERROR);
+
+
+        } else {
             Empleado empleado = employesTable.getSelectionModel().getSelectedItem();
             empleado.setNombre(nombreTextField.getText());
             empleado.setPrimer_apellido(primApellidoTextField.getText());
@@ -291,20 +260,14 @@ public class EmployesManagementController implements Initializable {
             notification.setMessage("Cambios realizados con éxito");
             notification.setTitle("Información de empleado editada");
             notification.setNotificationType(NotificationType.SUCCESS);
-            notification.showAndDismiss(Duration.millis(5000));
-            notification.setAnimationType(AnimationType.POPUP);
-        } else {
-            notification.setMessage("Fallo al entrar los datos. Campos nulos o vacíos");
-            notification.setTitle("Inserte de nuevo los datos");
-            notification.setNotificationType(NotificationType.ERROR);
-            notification.showAndDismiss(Duration.millis(5000));
-            notification.setAnimationType(AnimationType.POPUP);
         }
+        notification.showAndDismiss(Duration.millis(5000));
+        notification.setAnimationType(AnimationType.POPUP);
 
     }
 
 
-    private void resetValues(){
+    private void resetValues() {
         nombreTextField.setText("");
         primApellidoTextField.setText("");
         segApellidoTextfield.setText("");
@@ -316,7 +279,7 @@ public class EmployesManagementController implements Initializable {
 
     @FXML
     void resetAllValues(KeyEvent event) {
-        if(event.getCode().getName().equalsIgnoreCase("Esc")){
+        if (event.getCode().getName().equalsIgnoreCase("Esc")) {
             btnInsert.setDisable(false);
             btnDelete.setDisable(true);
             btnUpdate.setDisable(true);
