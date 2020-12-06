@@ -10,99 +10,7 @@ import java.util.*;
 
 public class Controller {
 
-   /* public static void mergeExcelFiles(File file, List<FileInputStream> list) throws IOException {
-        ArrayList<String> cell_formulas = generateCellToFormula();
 
-        XSSFWorkbook book = new XSSFWorkbook();
-        XSSFSheet sheet = null;
-
-        //FileInputStream obtains input bytes from the image file
-        InputStream inputStream = new FileInputStream("src/resources/medibiofarma.png");
-        //Get the contents of an InputStream as a byte[].
-        byte[] bytes = IOUtils.toByteArray(inputStream);
-        //Adds a picture to the workbook
-        int pictureIdx = book.addPicture(bytes, Workbook.PICTURE_TYPE_PNG);
-        //close the input stream
-        inputStream.close();
-
-
-        //to control the sheet where paste the picture
-        String calendar_year = "";
-        String location = "";
-        int total_sheets = 0;
-        try {
-            for (FileInputStream fin : list) {
-                XSSFWorkbook b = new XSSFWorkbook(fin);
-                for (int i = 0; i < b.getNumberOfSheets(); i++) {
-                    sheet = book.createSheet(b.getSheetName(i));
-                    copySheets(book, sheet, b.getSheetAt(i));
-                    total_sheets++;
-                    if (book.getNumberOfSheets() == 1) {
-                        calendar_year = book.getSheetAt(0).getRow(0).getCell(1).getStringCellValue();
-                        calendar_year = calendar_year.split(" ")[0];
-                        location = book.getSheetAt(0).getRow(0).getCell(6).getStringCellValue();
-                    }
-                    if (total_sheets > 1) {
-                        //LOGO Creation
-                        //Returns an object that handles instantiating concrete classes
-                        CreationHelper helper = book.getCreationHelper();
-
-                        //Creates the top-level drawing patriarch.
-                        Drawing drawing = sheet.createDrawingPatriarch();
-
-                        //Create an anchor that is attached to the worksheet
-                        ClientAnchor anchor = helper.createClientAnchor();
-                        //set top-left corner for the image
-                        anchor.setCol1(1);
-                        anchor.setRow1(1);
-
-                        //Creates a picture
-                        Picture pict = drawing.createPicture(anchor, pictureIdx);
-                        //Reset the image to the original size
-                        pict.resize(3, 3);
-
-                        //Push date
-                        Cell cell = sheet.getRow(53).getCell(6);
-                        if (cell != null) {
-                            cell.setCellValue(Integer.parseInt(calendar_year));
-                            cell.setCellType(CellType.NUMERIC);
-                            System.out.println(cell.getNumericCellValue());
-                        }
-
-                        cell = sheet.getRow(53).getCell(1);
-                        if (cell != null) {
-                            cell.setCellValue("En " + location + " a");
-                            cell.setCellType(CellType.STRING);
-                        }
-
-                        cell = sheet.getRow(48).getCell(6);
-                        if (cell != null) {
-                            //-2 para qiue coincida el numero de la lista con el numero de la hoja
-                            cell.setCellFormula("'" + book.getSheetAt(0).getSheetName() + "'" + "" +
-                                    cell_formulas.get(total_sheets - 2));
-                            System.out.println(cell.getCellFormula());
-                        }
-
-                        //passWeekendsToSheets
-                        //passWeekendToSheets(book, total_sheets);
-                    }
-                }
-            }
-
-            passWeekendToSheets(book);
-
-       /* Cell cell = book.getSheet("1").getRow(48).getCell(6);
-        if(cell != null){
-            cell.setCellFormula("'2021'!H11");
-        }*/
-
-
-    //writeFile(book, file);
-       /* } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }*/
 
     private static void copySheets(XSSFWorkbook newWorkbook, XSSFSheet newSheet, XSSFSheet sheet) {
         copySheets(newWorkbook, newSheet, sheet, true);
@@ -310,10 +218,10 @@ public class Controller {
 
                 InputStream inputStream = null;
                 if(empresa.getNombre().contains("Palobiofarma")){
-                    inputStream = getClass().getResourceAsStream(files.get(3).getName());
+                    inputStream = getClass().getResourceAsStream(files.get(2).getName());
                 }
                 else{
-                    inputStream = getClass().getResourceAsStream(files.get(2).getName());
+                    inputStream = getClass().getResourceAsStream(files.get(3).getName());
                 }
 
                 //Get the contents of an InputStream as a byte[].
@@ -410,7 +318,14 @@ public class Controller {
 
         for (int i = 1; i < 13; i++) {
             //set name empresa
-            book.getSheetAt(i).getRow(7).getCell(2).setCellValue(empresa.getNombre());
+            if(empresa.getNombre().contains("Palobiofarma")){
+                String [] nombre = empresa.getNombre().split(" ");
+                String nombre_empresa = String.join(" ",nombre[0],nombre[1]);
+                book.getSheetAt(i).getRow(7).getCell(2).setCellValue(nombre_empresa);
+            }
+            else{
+                book.getSheetAt(i).getRow(7).getCell(2).setCellValue(empresa.getNombre());
+            }
 
             //set CIF empresa
             book.getSheetAt(i).getRow(8).getCell(2).setCellValue(empresa.getNif());

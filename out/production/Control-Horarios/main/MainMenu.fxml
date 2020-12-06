@@ -47,7 +47,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </JFXButton>
-                  <JFXButton fx:id="aboutBtn" prefHeight="47.0" prefWidth="106.0" styleClass="menu-item3" stylesheets="@../styles/Style.css" text="About" GridPane.columnIndex="2">
+                  <JFXButton fx:id="aboutBtn" onAction="#loadHelp" prefHeight="47.0" prefWidth="106.0" styleClass="menu-item3" stylesheets="@../styles/Style.css" text="Ayuda" GridPane.columnIndex="2">
                      <font>
                         <Font name="Microsoft JhengHei" size="18.0" />
                      </font>

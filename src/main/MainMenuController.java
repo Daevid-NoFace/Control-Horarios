@@ -17,6 +17,7 @@ import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.*;
@@ -28,10 +29,8 @@ import tray.animations.AnimationType;
 import tray.notification.NotificationType;
 import tray.notification.TrayNotification;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.awt.*;
+import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -65,7 +64,6 @@ public class MainMenuController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        aboutBtn.setVisible(false);
 
 
         //File button
@@ -372,7 +370,7 @@ public class MainMenuController implements Initializable {
                     @Override
                     public void handle(WorkerStateEvent event) {
                         resultLabel.setText("Working on it");
-                        //progressBar.setProgress(longTask.getProgress()); //el progressbar este esta al berro
+                        progressBar.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS); //el progressbar este esta al berro
                     }
                 });
 
@@ -446,6 +444,25 @@ public class MainMenuController implements Initializable {
             dialogStage.showAndWait();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void loadHelp(ActionEvent event) throws IOException {
+        File file = new File("src/main/Control de horarios Palobiofarma S,L & Medibiofarma.pdf");
+
+        //first check if Desktop is supported by Platform or not
+        if(!Desktop.isDesktopSupported()){
+            System.out.println("Desktop is not supported");
+            return;
+        }
+
+        Desktop desktop = Desktop.getDesktop();
+
+        //let's try to open PDF file
+        if(file.exists()){
+            desktop.open(file);
+            System.out.println("Abriendo");
         }
     }
 
