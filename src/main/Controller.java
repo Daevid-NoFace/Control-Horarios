@@ -285,6 +285,24 @@ public class Controller {
                                     //-2 para qiue coincida el numero de la lista con el numero de la hoja
                                     cell.setCellFormula("('" + book.getSheetAt(0).getSheetName() + "'" + "" +
                                             cell_formulas.get(total_sheets - 2)+"*"+listaEmpleados.get(j).getHoras_laborables()+")/8");
+                                    //System.out.println(cell.getCellFormula());
+                                }
+
+                                cell = sheet.getRow(47).getCell(8);
+                                if(cell == null){
+                                    cell = sheet.getRow(47).createCell(8);
+                                    cell.setCellValue("Días de vacaciones restantes");
+                                }
+
+
+                                cell = sheet.getRow(14).getCell(8);
+                                if(total_sheets == 2 && cell != null){
+
+                                    cell.setCellFormula("'" + book.getSheetAt(0).getSheetName() + "'!AA29-"+"("+cell.getCellFormula()+")/8");
+                                    System.out.println(cell.getCellFormula());
+                                }
+                                else if(total_sheets >2){
+                                    cell.setCellFormula("'" + book.getSheetAt(total_sheets-2).getSheetName() + "'!I15-"+"("+cell.getCellFormula()+")/8");
                                     System.out.println(cell.getCellFormula());
                                 }
 
